@@ -1,14 +1,15 @@
 # Contentful WordPress Plugins
 
-A collection of WordPress plugins designed for Contentful integration and enhanced GraphQL functionality.
+A collection of WordPress plugins designed for Contentful integration and enhanced GraphQL functionality, with unified admin settings via [Silver Assist Settings Hub](https://github.com/SilverAssist/wp-settings-hub).
 
+[![CI](https://github.com/SilverAssist/contentful-wordpress-plugins/actions/workflows/ci.yml/badge.svg)](https://github.com/SilverAssist/contentful-wordpress-plugins/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-PolyForm%20Noncommercial-blue.svg)](https://polyformproject.org/licenses/noncommercial/1.0.0/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.5%2B-blue.svg)](https://wordpress.org)
 [![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4.svg)](https://php.net)
 
 ## 🚀 Plugins Included
 
-### 1. Community Listings CPT v2.0.0
+### 1. Community Listings CPT v2.1.0
 **Directory:** `community-listings/`
 
 Registers a hierarchical "Community" custom post type for state and city memory care listings with WPGraphQL support.
@@ -19,8 +20,9 @@ Registers a hierarchical "Community" custom post type for state and city memory 
 - WPGraphQL integration with shortcode rendering
 - Meta fields for Contentful integration
 - SEO-friendly URL structure
+- Silver Assist Settings Hub integration
 
-### 2. Contentful Tables v4.0.0
+### 2. Contentful Tables v4.1.0
 **Directory:** `contentful-tables/`
 
 Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.
@@ -33,8 +35,9 @@ Displays Contentful content components (tables, charts, cards, forms) using shor
 - Table of contents generation
 - WPGraphQL shortcode processing
 - Admin settings panel
+- Silver Assist Settings Hub integration
 
-### 3. GraphQL Shortcode Support v1.0.0
+### 3. GraphQL Shortcode Support v1.1.0
 **Directory:** `graphql-shortcode-support/`
 
 Applies `do_shortcode()` to WPGraphQL content fields, rendering shortcodes as HTML in GraphQL responses.
@@ -45,12 +48,14 @@ Applies `do_shortcode()` to WPGraphQL content fields, rendering shortcodes as HT
 - Configurable post types and fields
 - Toggle for raw vs. processed content
 - Admin settings interface
+- Silver Assist Settings Hub integration
 
 ## 📋 Requirements
 
 - **WordPress:** 6.5+
 - **PHP:** 8.2+
 - **Dependencies:** [WPGraphQL](https://www.wpgraphql.com/) plugin
+- **Optional:** [Silver Assist Settings Hub](https://github.com/SilverAssist/wp-settings-hub) for unified admin menu
 
 ## 🛠 Installation
 
@@ -67,10 +72,8 @@ cd /path/to/wordpress/wp-content/plugins/
 git clone https://github.com/SilverAssist/contentful-wordpress-plugins.git
 cd contentful-wordpress-plugins
 
-# Install dependencies for each plugin
-cd community-listings && composer install --no-dev --optimize-autoloader && cd ..
-cd contentful-tables && composer install --no-dev --optimize-autoloader && cd ..
-cd graphql-shortcode-support && composer install --no-dev --optimize-autoloader && cd ..
+# Install production dependencies for all plugins
+make install
 ```
 
 ### Option 3: Individual Plugin Installation
@@ -79,18 +82,34 @@ Clone or copy individual plugin directories to your WordPress plugins folder and
 
 ## ⚙️ Configuration
 
+### Silver Assist Settings Hub (Recommended)
+
+When the [wp-settings-hub](https://github.com/SilverAssist/wp-settings-hub) package is installed, all three plugins register under a unified **Silver Assist** top-level menu in WordPress admin:
+
+```
+WordPress Admin
+├── Silver Assist 🛡️
+│   ├── Dashboard              ← Overview of all plugins
+│   ├── Community Listings     ← Plugin status & info
+│   ├── Contentful Tables      ← Table settings & shortcodes
+│   └── GraphQL Shortcodes     ← Processing settings
+```
+
+If the Settings Hub is not installed, each plugin falls back to its own standalone settings page.
+
 ### Community Listings CPT
 - No additional configuration required
 - Custom post type is registered automatically
 - Access via WordPress Admin → Communities
+- Settings via **Silver Assist → Community Listings** (or **Settings → Community Listings**)
 
 ### Contentful Tables
-- Configure via **Settings → Contentful Tables**
+- Settings via **Silver Assist → Contentful Tables** (or **Settings → Contentful Tables**)
 - Set up data sources and styling options
 - Test shortcodes in posts/pages
 
 ### GraphQL Shortcode Support
-- Configure via **Tools → GraphQL Shortcodes**
+- Settings via **Silver Assist → GraphQL Shortcodes** (or **Tools → GraphQL Shortcodes**)
 - Choose which post types and fields to process
 - Toggle automatic processing on/off
 
@@ -168,13 +187,14 @@ make install-dev
 
 ### Quality Assurance
 ```bash
-# Run all quality checks
+# Run all quality checks (PHPCS + PHPStan)
 make test
 
 # Individual checks
-make phpcs        # Code standards
-make phpstan      # Static analysis
-make phpunit      # Unit tests (where available)
+make phpcs        # WordPress Coding Standards
+make phpcs-fix    # Auto-fix code style issues
+make phpstan      # Static analysis (Level 8)
+make lint         # Run PHPCS + PHPStan together
 ```
 
 ## 🤝 Contributing
@@ -204,7 +224,11 @@ For commercial licensing, please contact [Silver Assist](https://silverassist.co
 
 ## 🎯 Roadmap
 
-- [ ] Plugin update mechanism
+- [x] Silver Assist Settings Hub integration
+- [x] CI/CD pipeline with GitHub Actions
+- [x] PHPCS + PHPStan compliance (Level 8)
+- [x] Automated release packaging
+- [ ] Plugin update mechanism via GitHub
 - [ ] Automated testing with WordPress core versions
 - [ ] Additional Contentful content types
 - [ ] Performance optimizations
