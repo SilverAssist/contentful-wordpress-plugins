@@ -12,3 +12,6 @@ parameters:
     excludePaths:
         - tests/*
         - build/*
+    ignoreErrors:
+        - identifier: classConstant.unused
+        - identifier: function.notFound

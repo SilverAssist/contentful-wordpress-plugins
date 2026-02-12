@@ -12,6 +12,7 @@
 namespace SilverAssist\GraphQLShortcodeSupport\Admin;
 
 use SilverAssist\GraphQLShortcodeSupport\Core\Interfaces\LoadableInterface;
+use SilverAssist\SettingsHub\SettingsHub;
 
 // Prevent direct access.
 \defined( 'ABSPATH' ) || exit;
@@ -57,7 +58,7 @@ class SettingsPage implements LoadableInterface {
 	 * @return SettingsPage
 	 */
 	public static function instance(): SettingsPage {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
@@ -76,8 +77,36 @@ class SettingsPage implements LoadableInterface {
 	 * @return void
 	 */
 	public function init(): void {
-		\add_action( 'admin_menu', [ $this, 'add_settings_page' ] );
-		\add_action( 'admin_init', [ $this, 'register_settings' ] );
+		\add_action( 'init', array( $this, 'register_with_settings_hub' ) );
+		\add_action( 'admin_init', array( $this, 'register_settings' ) );
+	}
+
+	/**
+	 * Register this plugin with the Settings Hub.
+	 *
+	 * Falls back to a standalone settings page if the hub is not available.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return void
+	 */
+	public function register_with_settings_hub(): void {
+		if ( ! class_exists( SettingsHub::class ) ) {
+			\add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
+			return;
+		}
+
+		$hub = SettingsHub::get_instance();
+
+		$hub->register_plugin(
+			self::PAGE_SLUG,
+			\__( 'GraphQL Shortcode Support', 'graphql-shortcode-support' ),
+			array( $this, 'render_settings_page' ),
+			array(
+				'description' => \__( 'Applies do_shortcode() to WPGraphQL content fields, rendering shortcodes as HTML in GraphQL responses.', 'graphql-shortcode-support' ),
+				'version'     => GRAPHQL_SHORTCODE_SUPPORT_VERSION,
+			)
+		);
 	}
 
 	/**
@@ -111,7 +140,7 @@ class SettingsPage implements LoadableInterface {
 			\__( 'GraphQL Shortcodes', 'graphql-shortcode-support' ),
 			'manage_options',
 			self::PAGE_SLUG,
-			[ $this, 'render_settings_page' ]
+			array( $this, 'render_settings_page' )
 		);
 	}
 
@@ -287,7 +316,7 @@ class SettingsPage implements LoadableInterface {
 				\esc_attr( $post_type->name ),
 				\checked( $checked, true, false ),
 				\esc_html( $post_type->labels->singular_name ),
-				$graphql_label // Already escaped above.
+				\wp_kses_post( $graphql_label )
 			);
 		}
 

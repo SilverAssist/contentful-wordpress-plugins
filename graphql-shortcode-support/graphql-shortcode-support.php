@@ -26,25 +26,25 @@
 \defined( 'ABSPATH' ) || exit;
 
 // Define plugin constants.
-define( 'GSS_VERSION', '1.0.0' );
-define( 'GSS_FILE', __FILE__ );
-define( 'GSS_PATH', plugin_dir_path( __FILE__ ) );
-define( 'GSS_BASENAME', plugin_basename( __FILE__ ) );
+\define( 'GRAPHQL_SHORTCODE_SUPPORT_VERSION', '1.0.0' );
+\define( 'GRAPHQL_SHORTCODE_SUPPORT_FILE', __FILE__ );
+\define( 'GRAPHQL_SHORTCODE_SUPPORT_PATH', \plugin_dir_path( __FILE__ ) );
+\define( 'GRAPHQL_SHORTCODE_SUPPORT_BASENAME', \plugin_basename( __FILE__ ) );
 
 /**
  * Composer autoloader with security validation.
  */
-$gss_autoload_path      = GSS_PATH . 'vendor/autoload.php';
-$gss_real_autoload_path = realpath( $gss_autoload_path );
-$gss_plugin_real_path   = realpath( GSS_PATH );
+$graphql_shortcode_support_autoload_path      = GRAPHQL_SHORTCODE_SUPPORT_PATH . 'vendor/autoload.php';
+$graphql_shortcode_support_real_autoload_path = \realpath( $graphql_shortcode_support_autoload_path );
+$graphql_shortcode_support_plugin_real_path   = \realpath( GRAPHQL_SHORTCODE_SUPPORT_PATH );
 
 // Validate: both paths resolve, autoloader is inside plugin directory.
 if (
-	$gss_real_autoload_path &&
-	$gss_plugin_real_path &&
-	0 === strpos( $gss_real_autoload_path, $gss_plugin_real_path )
+	$graphql_shortcode_support_real_autoload_path &&
+	$graphql_shortcode_support_plugin_real_path &&
+	0 === \strpos( $graphql_shortcode_support_real_autoload_path, $graphql_shortcode_support_plugin_real_path )
 ) {
-	require_once $gss_real_autoload_path;
+	require_once $graphql_shortcode_support_real_autoload_path;
 } else {
 	\add_action(
 		'admin_notices',

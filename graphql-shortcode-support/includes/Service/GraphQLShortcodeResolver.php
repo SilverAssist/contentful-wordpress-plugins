@@ -46,7 +46,7 @@ class GraphQLShortcodeResolver implements LoadableInterface {
 	 * @return GraphQLShortcodeResolver
 	 */
 	public static function instance(): GraphQLShortcodeResolver {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;
@@ -199,7 +199,7 @@ class GraphQLShortcodeResolver implements LoadableInterface {
 			}
 
 			// PascalCase match (e.g., 'Post' === ucfirst('post')).
-			if ( $type_name === ucfirst( $post_type ) ) {
+			if ( ucfirst( $post_type ) === $type_name ) {
 				return true;
 			}
 
@@ -242,14 +242,14 @@ class GraphQLShortcodeResolver implements LoadableInterface {
 					'resolve'     => function ( $post ) {
 						$content = '';
 
-						if ( isset( $post->contentRaw ) ) {
-							$content = $post->contentRaw;
+						if ( isset( $post->content_raw ) ) {
+							$content = $post->content_raw;
 						} elseif ( isset( $post->ID ) ) {
 							$post_object = \get_post( $post->ID );
 							$content     = $post_object ? $post_object->post_content : '';
 						} elseif ( is_object( $post ) && method_exists( $post, '__get' ) ) {
 							// WPGraphQL Post model.
-							$content = $post->contentRaw ?? '';
+							$content = $post->content_raw ?? '';
 						}
 
 						if ( empty( $content ) ) {

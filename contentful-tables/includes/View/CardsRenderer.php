@@ -38,7 +38,7 @@ final class CardsRenderer {
 		$custom_class = \sanitize_text_field( $atts['class'] ?? '' );
 		$filters_attr = \sanitize_text_field( $atts['filters'] ?? '' );
 
-		$title = $custom_title ? $custom_title : ($card_data['title'] ?? '');
+		$title = $custom_title ? $custom_title : ( $card_data['title'] ?? '' );
 		$title = Helpers::resolve_title_placeholders( $title );
 
 		// Determine key filter.
@@ -61,7 +61,7 @@ final class CardsRenderer {
 		}
 
 		if ( $card_data ) {
-			$rows = $data_loader->get_card_rows($card_data);
+			$rows  = $data_loader->get_card_rows( $card_data );
 			$html .= self::render_card_grid( $rows, $card_data, $key_filter );
 		} else {
 			$html .= '<p class="cards-placeholder">[Provider listings]</p>';
@@ -107,14 +107,14 @@ final class CardsRenderer {
 					$rows,
 					static function ( array $row ) use ( $key_col_idx, $key_filter ): bool {
 						$row_key = \strtolower( \trim( $row[ $key_col_idx ] ?? '' ) );
-						return \strtolower($key_filter) === $row_key;
+						return \strtolower( $key_filter ) === $row_key;
 					}
 				)
 			);
 		}
 
 		// Determine display columns.
-		$display_cols = array();
+		$display_cols     = array();
 		$selected_columns = $card_data['filters']['selectedColumns'] ?? array();
 
 		if ( ! empty( $selected_columns ) ) {
@@ -128,7 +128,7 @@ final class CardsRenderer {
 		}
 
 		if ( empty( $display_cols ) ) {
-			$hidden = array('key', 'slug');
+			$hidden = array( 'key', 'slug' );
 			for ( $c = 0, $count = \count( $headers ); $c < $count; $c++ ) {
 				if ( ! \in_array( \strtolower( $headers[ $c ] ), $hidden, true ) ) {
 					$display_cols[] = $c;

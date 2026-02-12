@@ -33,7 +33,7 @@ final class ChartRenderer {
 		$custom_title = \sanitize_text_field( $atts['title'] ?? '' );
 		$custom_class = \sanitize_text_field( $atts['class'] ?? '' );
 
-		$title = $custom_title ? $custom_title : ($chart_data['title'] ?? '');
+		$title    = $custom_title ? $custom_title : ( $chart_data['title'] ?? '' );
 		$viz_type = $chart_data['visualizationType'] ?? ( $atts['type'] ?? '' );
 
 		$html = '<div class="contentful-chart' . ( $custom_class ? ' ' . \esc_attr( $custom_class ) : '' ) . '" id="contentful-chart-' . \esc_attr( $chart_id ) . '">';

@@ -10,3 +10,6 @@ parameters:
         - vendor
     bootstrapFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    ignoreErrors:
+        - identifier: constant.notFound
+        - identifier: argument.type

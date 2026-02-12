@@ -14,6 +14,7 @@ namespace SilverAssist\ContentfulTables\Admin;
 
 use SilverAssist\ContentfulTables\Core\Interfaces\LoadableInterface;
 use SilverAssist\ContentfulTables\Service\TableDataLoader;
+use SilverAssist\SettingsHub\SettingsHub;
 
 /**
  * Registers the admin settings page under Settings.
@@ -63,7 +64,35 @@ final class SettingsPage implements LoadableInterface {
 	 * @return void
 	 */
 	public function register(): void {
-		\add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		\add_action( 'init', array( $this, 'register_with_settings_hub' ) );
+	}
+
+	/**
+	 * Register this plugin with the Settings Hub.
+	 *
+	 * Falls back to a standalone settings page if the hub is not available.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @return void
+	 */
+	public function register_with_settings_hub(): void {
+		if ( ! class_exists( SettingsHub::class ) ) {
+			\add_action( 'admin_menu', array( $this, 'add_menu' ) );
+			return;
+		}
+
+		$hub = SettingsHub::get_instance();
+
+		$hub->register_plugin(
+			'contentful-tables',
+			\__( 'Contentful Tables', 'contentful-tables' ),
+			array( $this, 'render_page' ),
+			array(
+				'description' => \__( 'Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.', 'contentful-tables' ),
+				'version'     => CTFL_TABLES_VERSION,
+			)
+		);
 	}
 
 	/**

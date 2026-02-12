@@ -12,6 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Core;
 
+use SilverAssist\CommunityListings\Admin\SettingsPage;
 use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
 use SilverAssist\CommunityListings\Service\CptRegistrar;
 use SilverAssist\CommunityListings\Service\GraphQLResolver;
@@ -75,6 +76,7 @@ final class Plugin {
 			new CptRegistrar(),
 			new RestApiFilters(),
 			new GraphQLResolver(),
+			new SettingsPage(),
 		);
 
 		// Sort by priority ascending.

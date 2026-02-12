@@ -30,7 +30,7 @@ final class GraphQLResolver implements LoadableInterface {
 	 *
 	 * @var string[]
 	 */
-	private const TARGET_TYPES = array('Post', 'Page', 'Community');
+	private const TARGET_TYPES = array( 'Post', 'Page', 'Community' );
 
 	/**
 	 * Content field keys to process.
@@ -39,7 +39,7 @@ final class GraphQLResolver implements LoadableInterface {
 	 *
 	 * @var string[]
 	 */
-	private const TARGET_FIELDS = array('content', 'excerpt');
+	private const TARGET_FIELDS = array( 'content', 'excerpt' );
 
 	/**
 	 * Return the loading priority.
@@ -60,8 +60,8 @@ final class GraphQLResolver implements LoadableInterface {
 	 * @return void
 	 */
 	public function register(): void {
-		\add_filter('graphql_resolve_field', array($this, 'resolve_shortcodes'), 10, 9);
-		\add_action('graphql_register_types', array($this, 'register_rendered_content'));
+		\add_filter( 'graphql_resolve_field', array( $this, 'resolve_shortcodes' ), 10, 9 );
+		\add_action( 'graphql_register_types', array( $this, 'register_rendered_content' ) );
 	}
 
 	/**
@@ -142,7 +142,7 @@ final class GraphQLResolver implements LoadableInterface {
 					'resolve'     => static function ( $post ): string {
 						$content = '';
 
-						if (isset($post->content_raw)) {
+						if ( isset( $post->content_raw ) ) {
 							$content = $post->content_raw;
 						} elseif ( isset( $post->ID ) ) {
 							$post_object = \get_post( $post->ID );

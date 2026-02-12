@@ -42,8 +42,8 @@ final class GraphQLResolver implements LoadableInterface {
 	 * @return void
 	 */
 	public function register(): void {
-		\add_filter('graphql_resolve_field', array($this, 'resolve_shortcodes'), 10, 9);
-		\add_action('graphql_register_types', array($this, 'register_rendered_content'));
+		\add_filter( 'graphql_resolve_field', array( $this, 'resolve_shortcodes' ), 10, 9 );
+		\add_action( 'graphql_register_types', array( $this, 'register_rendered_content' ) );
 	}
 
 	/**
@@ -77,7 +77,7 @@ final class GraphQLResolver implements LoadableInterface {
 			return $result;
 		}
 
-		$target_fields = array('content', 'excerpt');
+		$target_fields = array( 'content', 'excerpt' );
 		if ( ! \in_array( $field_key, $target_fields, true ) ) {
 			return $result;
 		}
@@ -114,7 +114,7 @@ final class GraphQLResolver implements LoadableInterface {
 				'resolve'     => static function ( $post ): string {
 					$content = '';
 
-					if (isset($post->content_raw)) {
+					if ( isset( $post->content_raw ) ) {
 						$content = $post->content_raw;
 					} elseif ( isset( $post->ID ) ) {
 						$post_object = \get_post( $post->ID );

@@ -42,7 +42,7 @@ class Plugin implements LoadableInterface {
 	 * @return Plugin
 	 */
 	public static function instance(): Plugin {
-		if ( self::$instance === null ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 		return self::$instance;

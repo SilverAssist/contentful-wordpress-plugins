@@ -23,7 +23,7 @@ install: ## Install production dependencies for all plugins
 	@echo "$(BLUE)Installing production dependencies...$(NC)"
 	@for plugin in $(PLUGINS); do \
 		echo "Installing dependencies for $$plugin..."; \
-		cd $$plugin && composer install --no-dev --optimize-autoloader && cd ..; \
+		(cd $$plugin && composer install --no-dev --optimize-autoloader); \
 	done
 	@echo "$(GREEN)✅ Production dependencies installed!$(NC)"
 
@@ -31,7 +31,7 @@ install-dev: ## Install development dependencies for all plugins
 	@echo "$(BLUE)Installing development dependencies...$(NC)"
 	@for plugin in $(PLUGINS); do \
 		echo "Installing dev dependencies for $$plugin..."; \
-		cd $$plugin && composer install && cd ..; \
+		(cd $$plugin && composer install); \
 	done
 	@echo "$(GREEN)✅ Development dependencies installed!$(NC)"
 
@@ -47,7 +47,7 @@ phpcs: ## Run PHP CodeSniffer on all plugins
 	@echo "$(BLUE)Running PHPCS on all plugins...$(NC)"
 	@for plugin in $(PLUGINS); do \
 		echo "Checking $$plugin..."; \
-		cd $$plugin && composer run phpcs && cd ..; \
+		(cd $$plugin && composer run phpcs); \
 	done
 	@echo "$(GREEN)✅ PHPCS completed!$(NC)"
 
@@ -55,7 +55,7 @@ phpcs-fix: ## Fix PHP CodeSniffer issues automatically
 	@echo "$(BLUE)Auto-fixing PHPCS issues...$(NC)"
 	@for plugin in $(PLUGINS); do \
 		echo "Fixing $$plugin..."; \
-		cd $$plugin && ./vendor/bin/phpcbf --standard=phpcs.xml . && cd ..; \
+		(cd $$plugin && ./vendor/bin/phpcbf --standard=phpcs.xml .); \
 	done
 	@echo "$(GREEN)✅ PHPCS fixes applied!$(NC)"
 
@@ -63,7 +63,7 @@ phpstan: ## Run PHPStan static analysis on all plugins
 	@echo "$(BLUE)Running PHPStan on all plugins...$(NC)"
 	@for plugin in $(PLUGINS); do \
 		echo "Analyzing $$plugin..."; \
-		cd $$plugin && composer run phpstan && cd ..; \
+		(cd $$plugin && composer run phpstan); \
 	done
 	@echo "$(GREEN)✅ PHPStan analysis completed!$(NC)"
 

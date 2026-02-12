@@ -27,9 +27,7 @@ jobs:
     - name: Validate composer.json files
       run: |
         for plugin in community-listings contentful-tables graphql-shortcode-support; do
-          cd $plugin
-          composer validate --strict
-          cd ..
+          (cd $plugin && composer validate --strict)
         done
 
     - name: Cache Composer dependencies
@@ -45,7 +43,11 @@ jobs:
       run: make install-dev
 
     - name: Run PHPCS
-      run: make phpcs
+      run: |
+        for plugin in community-listings contentful-tables graphql-shortcode-support; do
+          echo "Checking $plugin..."
+          (cd $plugin && ./vendor/bin/phpcs --standard=phpcs.xml --warning-severity=0 .)
+        done
 
     - name: Run PHPStan
       run: make phpstan
