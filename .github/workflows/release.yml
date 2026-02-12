@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.2
+        extensions: mbstring, intl
+
+    - name: Install dependencies and build
+      run: |
+        make install
+        make build
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+        body: |
+          ## 🎉 WordPress Plugins Release
+          
+          ### 📦 Included Plugins
+          - **Community Listings CPT** - Hierarchical custom post type for memory care listings
+          - **Contentful Tables** - Content component rendering with shortcodes
+          - **GraphQL Shortcode Support** - Shortcode processing for WPGraphQL responses
+          
+          ### 📋 Requirements
+          - WordPress 6.5+
+          - PHP 8.2+
+          - WPGraphQL plugin
+          
+          ### 🛠 Installation
+          Download the ZIP files below and upload via WordPress Admin → Plugins → Add New → Upload
+          
+          See the [README](https://github.com/SilverAssist/contentful-wordpress-plugins#installation) for detailed installation instructions.
+
+    - name: Upload Community Listings Plugin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/community-listings-v2.0.0.zip
+        asset_name: community-listings-v2.0.0.zip
+        asset_content_type: application/zip
+
+    - name: Upload Contentful Tables Plugin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/contentful-tables-v4.0.0.zip
+        asset_name: contentful-tables-v4.0.0.zip
+        asset_content_type: application/zip
+
+    - name: Upload GraphQL Shortcode Support Plugin
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/graphql-shortcode-support-v1.0.0.zip
+        asset_name: graphql-shortcode-support-v1.0.0.zip
+        asset_content_type: application/zip
