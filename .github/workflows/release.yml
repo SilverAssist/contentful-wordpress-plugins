@@ -34,19 +34,25 @@ jobs:
           ## 🎉 WordPress Plugins Release
           
           ### 📦 Included Plugins
-          - **Community Listings CPT** - Hierarchical custom post type for memory care listings
-          - **Contentful Tables** - Content component rendering with shortcodes
-          - **GraphQL Shortcode Support** - Shortcode processing for WPGraphQL responses
+          - **Community Listings CPT** v2.1.0 — Hierarchical custom post type for memory care listings
+          - **Contentful Tables** v4.1.0 — Content component rendering with shortcodes
+          - **GraphQL Shortcode Support** v1.1.0 — Shortcode processing for WPGraphQL responses
+          
+          ### ✨ What's New
+          - Integrated **Silver Assist Settings Hub** for unified admin settings
+          - Fixed all PHPCS and PHPStan compliance issues
+          - Improved CI pipeline (GitHub Actions v4, subshell Makefile)
           
           ### 📋 Requirements
           - WordPress 6.5+
           - PHP 8.2+
           - WPGraphQL plugin
+          - (Optional) [wp-settings-hub](https://github.com/SilverAssist/wp-settings-hub) for unified settings
           
           ### 🛠 Installation
           Download the ZIP files below and upload via WordPress Admin → Plugins → Add New → Upload
           
-          See the [README](https://github.com/SilverAssist/contentful-wordpress-plugins#installation) for detailed installation instructions.
+          See the [README](https://github.com/SilverAssist/contentful-wordpress-plugins#installation) for detailed instructions.
         files: |
           dist/community-listings-*.zip
           dist/contentful-tables-*.zip
