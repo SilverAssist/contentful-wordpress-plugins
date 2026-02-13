@@ -89,15 +89,12 @@ final class CardsRenderer {
 
 		$headers = \array_shift( $rows );
 
-		// Find key column index.
-		$key_col_idx = -1;
-		if ( ! empty( $key_filter ) ) {
-			$key_col_idx = $card_data['keyColumnIndex'] ?? -1;
-			if ( $key_col_idx < 0 ) {
-				$lowercase_headers = \array_map( 'strtolower', $headers );
-				$found             = \array_search( 'key', $lowercase_headers, true );
-				$key_col_idx       = ( false !== $found ) ? (int) $found : -1;
-			}
+		// Find key column index — always detect so it can be excluded from display.
+		$key_col_idx = $card_data['keyColumnIndex'] ?? -1;
+		if ( $key_col_idx < 0 ) {
+			$lowercase_headers = \array_map( 'strtolower', $headers );
+			$found             = \array_search( 'key', $lowercase_headers, true );
+			$key_col_idx       = ( false !== $found ) ? (int) $found : -1;
 		}
 
 		// Filter rows by key.

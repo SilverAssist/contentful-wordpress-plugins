@@ -67,23 +67,23 @@ final class TableRenderer {
 		$headers  = \array_shift( $raw_data );
 
 		// Determine the key column index.
+		// Always detect the key column so it can be hidden from display,
+		// even when no filter is actively applied.
 		$key_col_idx  = -1;
 		$key_col_name = $table_data['keyColumn'] ?? null;
 
-		if ( ! empty( $key_filter ) ) {
-			if ( $key_col_name ) {
-				$key_col_idx = $table_data['keyColumnIndex'] ?? -1;
-				if ( $key_col_idx < 0 ) {
-					$found       = \array_search( $key_col_name, $headers, true );
-					$key_col_idx = ( false !== $found ) ? (int) $found : -1;
-				}
-			}
-
-			// Auto-detect: look for a column named 'key'.
+		if ( $key_col_name ) {
+			$key_col_idx = $table_data['keyColumnIndex'] ?? -1;
 			if ( $key_col_idx < 0 ) {
-				$found       = \array_search( 'key', \array_map( 'strtolower', $headers ), true );
+				$found       = \array_search( $key_col_name, $headers, true );
 				$key_col_idx = ( false !== $found ) ? (int) $found : -1;
 			}
+		}
+
+		// Auto-detect: look for a column named 'key'.
+		if ( $key_col_idx < 0 ) {
+			$found       = \array_search( 'key', \array_map( 'strtolower', $headers ), true );
+			$key_col_idx = ( false !== $found ) ? (int) $found : -1;
 		}
 
 		// Apply key-based row filtering.

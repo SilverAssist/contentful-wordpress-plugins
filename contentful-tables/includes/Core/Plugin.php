@@ -77,6 +77,7 @@ final class Plugin {
 
 		// Register components by priority.
 		$this->components = array(
+			$data_loader,
 			new ShortcodeRegistrar( $data_loader ),
 			new GraphQLResolver(),
 			new SettingsPage( $data_loader ),
