@@ -22,7 +22,7 @@ Registers a hierarchical "Community" custom post type for state and city memory 
 - SEO-friendly URL structure
 - Silver Assist Settings Hub integration
 
-### 2. Contentful Tables v4.1.0
+### 2. Contentful Tables v4.1.1
 **Directory:** `contentful-tables/`
 
 Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.
