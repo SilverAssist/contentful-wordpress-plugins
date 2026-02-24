@@ -112,6 +112,9 @@ final class CptRegistrar implements LoadableInterface {
 			'hierarchical'       => true,
 			'menu_position'      => 5,
 			'menu_icon'          => 'dashicons-location-alt',
+			'show_in_graphql'     => true,
+			'graphql_single_name' => 'community',
+			'graphql_plural_name' => 'communities',
 			'supports'           => array(
 				'title',
 				'editor',

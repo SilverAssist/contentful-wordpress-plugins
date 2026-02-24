@@ -34,14 +34,12 @@ jobs:
           ## 🎉 WordPress Plugins Release
           
           ### 📦 Included Plugins
-          - **Community Listings CPT** v2.1.0 — Hierarchical custom post type for memory care listings
-          - **Contentful Tables** v4.1.0 — Content component rendering with shortcodes
+          - **Community Listings CPT** v2.1.1 — Hierarchical custom post type for memory care listings
+          - **Contentful Tables** v4.1.1 — Content component rendering with shortcodes
           - **GraphQL Shortcode Support** v1.1.0 — Shortcode processing for WPGraphQL responses
           
           ### ✨ What's New
-          - Integrated **Silver Assist Settings Hub** for unified admin settings
-          - Fixed all PHPCS and PHPStan compliance issues
-          - Improved CI pipeline (GitHub Actions v4, subshell Makefile)
+          - **fix(community-listings):** Register Community CPT in WPGraphQL schema (`show_in_graphql`, `graphql_single_name`, `graphql_plural_name`)
           
           ### 📋 Requirements
           - WordPress 6.5+
