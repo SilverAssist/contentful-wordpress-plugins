@@ -96,12 +96,22 @@ final class GraphQLResolver implements LoadableInterface {
 	/**
 	 * Register renderedContent field on Community type.
 	 *
+	 * Skips registration when the GraphQL Shortcode Support plugin is active,
+	 * because that plugin registers the same field for all configured post types
+	 * (including Community), avoiding a DUPLICATE_FIELD error in WPGraphQL.
+	 *
 	 * @since 2.0.0
+	 * @since 2.2.0 Added duplicate-field guard for GraphQL Shortcode Support compatibility.
 	 *
 	 * @return void
 	 */
 	public function register_rendered_content(): void {
 		if ( ! \function_exists( 'register_graphql_field' ) ) {
+			return;
+		}
+
+		// Bail if GraphQL Shortcode Support is active — it registers renderedContent generically.
+		if ( \class_exists( \SilverAssist\GraphQLShortcodeSupport\Core\Plugin::class ) ) {
 			return;
 		}
 
