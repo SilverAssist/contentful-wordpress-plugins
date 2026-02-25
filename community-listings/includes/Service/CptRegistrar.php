@@ -43,6 +43,7 @@ final class CptRegistrar implements LoadableInterface {
 		'hero_text_contrast' => 'boolean',
 		'noindex'            => 'boolean',
 		'nofollow'           => 'boolean',
+		'provider_listings'  => 'string',
 	);
 
 	/**
