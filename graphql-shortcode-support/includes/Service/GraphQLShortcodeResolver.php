@@ -226,12 +226,21 @@ class GraphQLShortcodeResolver implements LoadableInterface {
 	public function register_rendered_content_field(): void {
 		$post_types = $this->settings['post_types'] ?? [ 'post', 'page', 'community' ];
 
+		$registered_types = [];
+
 		foreach ( $post_types as $post_type ) {
 			$graphql_type = $this->get_graphql_type_name( $post_type );
 
 			if ( empty( $graphql_type ) ) {
 				continue;
 			}
+
+			// Prevent duplicate registration when multiple post type slugs
+			// resolve to the same GraphQL type name.
+			if ( isset( $registered_types[ $graphql_type ] ) ) {
+				continue;
+			}
+			$registered_types[ $graphql_type ] = true;
 
 			\register_graphql_field(
 				$graphql_type,

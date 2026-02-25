@@ -9,6 +9,16 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
+## [v1.2.2] — 2026-02-25
+
+### Plugin Versions
+- **Community Listings CPT** v2.2.1
+- **Contentful Tables** v4.2.0
+- **GraphQL Shortcode Support** v1.2.1
+
+### Fixed
+- **graphql-shortcode-support:** Prevent duplicate `renderedContent` field registration when multiple post type slugs resolve to the same WPGraphQL type name (DUPLICATE_FIELD error)
+
 ## [v1.2.1] — 2026-02-24
 
 ### Plugin Versions
@@ -93,7 +103,8 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
-[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.2...HEAD
+[v1.2.2]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.1...v1.2.2
 [v1.2.1]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.0...v1.2.1
 [v1.2.0]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.1.2...v1.2.0
 [v1.1.2]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.1.1...v1.1.2

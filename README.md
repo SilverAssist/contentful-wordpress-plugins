@@ -37,7 +37,7 @@ Displays Contentful content components (tables, charts, cards, forms) using shor
 - Admin settings panel
 - Silver Assist Settings Hub integration
 
-### 3. GraphQL Shortcode Support v1.2.0
+### 3. GraphQL Shortcode Support v1.2.1
 **Directory:** `graphql-shortcode-support/`
 
 Applies `do_shortcode()` to WPGraphQL content fields, rendering shortcodes as HTML in GraphQL responses.
