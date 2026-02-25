@@ -9,7 +9,7 @@ A collection of WordPress plugins designed for Contentful integration and enhanc
 
 ## 🚀 Plugins Included
 
-### 1. Community Listings CPT v2.2.0
+### 1. Community Listings CPT v2.2.1
 **Directory:** `community-listings/`
 
 Registers a hierarchical "Community" custom post type for state and city memory care listings with WPGraphQL support.
