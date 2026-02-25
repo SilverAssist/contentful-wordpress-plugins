@@ -143,10 +143,11 @@ final class CptRegistrar implements LoadableInterface {
 				'community',
 				$key,
 				array(
-					'show_in_rest'  => true,
-					'single'        => true,
-					'type'          => $type,
-					'auth_callback' => static function (): bool {
+					'show_in_rest'    => true,
+					'show_in_graphql' => true,
+					'single'          => true,
+					'type'            => $type,
+					'auth_callback'   => static function (): bool {
 						return \current_user_can( 'edit_posts' );
 					},
 				)
@@ -186,12 +187,16 @@ final class CptRegistrar implements LoadableInterface {
 			$graphql_fields[ $camel_key ] = array(
 				'type'        => $type_map[ $type ] ?? 'String',
 				'description' => \sprintf( 'The %s meta field.', \str_replace( '_', ' ', $key ) ),
-				'resolve'     => static function ( $post ) use ( $key, $type ) {
+				'resolve'     => static function ( $source ) use ( $key, $type ) {
 					$post_id = 0;
-					if ( isset( $post->ID ) ) {
-						$post_id = (int) $post->ID;
-					} elseif ( isset( $post->databaseId ) ) {
-						$post_id = (int) $post->databaseId;
+
+					// WPGraphQL Model\Post — preferred.
+					if ( \is_object( $source ) && isset( $source->databaseId ) ) {
+						$post_id = (int) $source->databaseId;
+					} elseif ( $source instanceof \WP_Post ) {
+						$post_id = (int) $source->ID;
+					} elseif ( \is_object( $source ) && isset( $source->ID ) ) {
+						$post_id = (int) $source->ID;
 					}
 
 					if ( 0 === $post_id ) {
@@ -204,7 +209,7 @@ final class CptRegistrar implements LoadableInterface {
 						return (bool) $value;
 					}
 
-					return \is_string( $value ) ? $value : '';
+					return \is_string( $value ) ? $value : (string) $value;
 				},
 			);
 		}

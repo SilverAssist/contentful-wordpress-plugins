@@ -9,6 +9,17 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
+## [v1.2.4] — 2026-02-25
+
+### Plugin Versions
+- **Community Listings CPT** v2.2.3
+- **Contentful Tables** v4.2.0
+- **GraphQL Shortcode Support** v1.2.1
+
+### Fixed
+- **community-listings:** Fix meta field resolver to use WPGraphQL `databaseId` property first (WPGraphQL `Model\Post` does not expose `ID` directly)
+- **community-listings:** Add `show_in_graphql => true` to `register_post_meta()` calls for native WPGraphQL meta support
+
 ## [v1.2.3] — 2026-02-25
 
 ### Plugin Versions
@@ -113,7 +124,8 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
-[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.3...HEAD
+[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.4...HEAD
+[v1.2.4]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.3...v1.2.4
 [v1.2.3]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.2...v1.2.3
 [v1.2.2]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.1...v1.2.2
 [v1.2.1]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.0...v1.2.1
