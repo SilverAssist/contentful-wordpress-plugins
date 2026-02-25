@@ -3,7 +3,7 @@
  * Plugin Name: Contentful Tables
  * Plugin URI: https://github.com/SilverAssist/contentful-tables
  * Description: Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.
- * Version: 4.1.1
+ * Version: 4.2.0
  * Author: Silver Assist
  * Author URI: https://silverassist.com
  * License: PolyForm-Noncommercial-1.0.0
@@ -26,7 +26,7 @@
 \defined( 'ABSPATH' ) || exit;
 
 // Define plugin constants.
-\define( 'CTFL_TABLES_VERSION', '4.1.1' );
+\define( 'CTFL_TABLES_VERSION', '4.2.0' );
 \define( 'CTFL_TABLES_FILE', __FILE__ );
 \define( 'CTFL_TABLES_PATH', \plugin_dir_path( __FILE__ ) );
 \define( 'CTFL_TABLES_URL', \plugin_dir_url( __FILE__ ) );

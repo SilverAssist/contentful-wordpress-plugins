@@ -9,7 +9,7 @@ A collection of WordPress plugins designed for Contentful integration and enhanc
 
 ## 🚀 Plugins Included
 
-### 1. Community Listings CPT v2.1.1
+### 1. Community Listings CPT v2.2.0
 **Directory:** `community-listings/`
 
 Registers a hierarchical "Community" custom post type for state and city memory care listings with WPGraphQL support.
@@ -22,7 +22,7 @@ Registers a hierarchical "Community" custom post type for state and city memory 
 - SEO-friendly URL structure
 - Silver Assist Settings Hub integration
 
-### 2. Contentful Tables v4.1.1
+### 2. Contentful Tables v4.2.0
 **Directory:** `contentful-tables/`
 
 Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.
@@ -37,7 +37,7 @@ Displays Contentful content components (tables, charts, cards, forms) using shor
 - Admin settings panel
 - Silver Assist Settings Hub integration
 
-### 3. GraphQL Shortcode Support v1.1.0
+### 3. GraphQL Shortcode Support v1.2.0
 **Directory:** `graphql-shortcode-support/`
 
 Applies `do_shortcode()` to WPGraphQL content fields, rendering shortcodes as HTML in GraphQL responses.

@@ -17,9 +17,9 @@ contentful-wordpress-plugins/
 │   └── workflows/
 │       ├── ci.yml              # Automated testing
 │       └── release.yml         # Automated releases
-├── community-listings/          # Plugin 1 (v2.0.0)
-├── contentful-tables/           # Plugin 2 (v4.0.0)
-└── graphql-shortcode-support/   # Plugin 3 (v1.0.0)
+├── community-listings/          # Plugin 1 (v2.2.0)
+├── contentful-tables/           # Plugin 2 (v4.2.0)
+└── graphql-shortcode-support/   # Plugin 3 (v1.2.0)
 ```
 
 ### ✅ Features Included

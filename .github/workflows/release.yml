@@ -26,30 +26,55 @@ jobs:
         make install
         make build
 
+    - name: Extract plugin versions
+      id: versions
+      run: |
+        CL_VER=$(grep "Version:" community-listings/community-listings.php | sed 's/.*Version: *//')
+        CT_VER=$(grep "Version:" contentful-tables/contentful-tables.php | sed 's/.*Version: *//')
+        GS_VER=$(grep "Version:" graphql-shortcode-support/graphql-shortcode-support.php | sed 's/.*Version: *//')
+        echo "cl_version=$CL_VER" >> "$GITHUB_OUTPUT"
+        echo "ct_version=$CT_VER" >> "$GITHUB_OUTPUT"
+        echo "gs_version=$GS_VER" >> "$GITHUB_OUTPUT"
+
+    - name: Extract changelog for this release
+      id: changelog
+      run: |
+        TAG="${GITHUB_REF_NAME}"
+        # Extract the section for this tag from CHANGELOG.md
+        NOTES=$(awk "/^## \[${TAG}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md)
+        if [ -z "$NOTES" ]; then
+          NOTES="See [CHANGELOG.md](https://github.com/SilverAssist/contentful-wordpress-plugins/blob/main/CHANGELOG.md) for details."
+        fi
+        # Write multiline output
+        {
+          echo "notes<<EOF"
+          echo "$NOTES"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
     - name: Create Release and Upload Assets
       uses: softprops/action-gh-release@v2
       with:
         name: Release ${{ github.ref_name }}
         body: |
-          ## 🎉 WordPress Plugins Release
-          
+          ## 🎉 WordPress Plugins Release ${{ github.ref_name }}
+
           ### 📦 Included Plugins
-          - **Community Listings CPT** v2.1.1 — Hierarchical custom post type for memory care listings
-          - **Contentful Tables** v4.1.1 — Content component rendering with shortcodes
-          - **GraphQL Shortcode Support** v1.1.0 — Shortcode processing for WPGraphQL responses
-          
-          ### ✨ What's New
-          - **fix(community-listings):** Register Community CPT in WPGraphQL schema (`show_in_graphql`, `graphql_single_name`, `graphql_plural_name`)
-          
+          - **Community Listings CPT** v${{ steps.versions.outputs.cl_version }}
+          - **Contentful Tables** v${{ steps.versions.outputs.ct_version }}
+          - **GraphQL Shortcode Support** v${{ steps.versions.outputs.gs_version }}
+
+          ${{ steps.changelog.outputs.notes }}
+
           ### 📋 Requirements
           - WordPress 6.5+
           - PHP 8.2+
           - WPGraphQL plugin
           - (Optional) [wp-settings-hub](https://github.com/SilverAssist/wp-settings-hub) for unified settings
-          
+
           ### 🛠 Installation
           Download the ZIP files below and upload via WordPress Admin → Plugins → Add New → Upload
-          
+
           See the [README](https://github.com/SilverAssist/contentful-wordpress-plugins#installation) for detailed instructions.
         files: |
           dist/community-listings-*.zip
