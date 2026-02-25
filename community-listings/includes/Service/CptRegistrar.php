@@ -66,6 +66,7 @@ final class CptRegistrar implements LoadableInterface {
 	public function register(): void {
 		\add_action( 'init', array( self::class, 'register_post_type' ) );
 		\add_action( 'init', array( $this, 'register_meta' ) );
+		\add_action( 'graphql_register_types', array( $this, 'register_graphql_meta_fields' ) );
 	}
 
 	/**
@@ -151,5 +152,83 @@ final class CptRegistrar implements LoadableInterface {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Register the CommunityMeta GraphQL object type and communityMeta field.
+	 *
+	 * Exposes all custom meta fields on the Community type via a dedicated
+	 * `communityMeta` field in WPGraphQL.
+	 *
+	 * @since 2.2.2
+	 *
+	 * @return void
+	 */
+	public function register_graphql_meta_fields(): void {
+		if ( ! \function_exists( 'register_graphql_object_type' ) ) {
+			return;
+		}
+
+		// Map PHP meta types to GraphQL scalar types.
+		$type_map = array(
+			'string'  => 'String',
+			'boolean' => 'Boolean',
+			'integer' => 'Int',
+			'number'  => 'Float',
+		);
+
+		// Build the fields array for the CommunityMeta object type.
+		$graphql_fields = array();
+		foreach ( self::META_FIELDS as $key => $type ) {
+			// Convert snake_case meta key to camelCase GraphQL field name.
+			$camel_key = \lcfirst( \str_replace( '_', '', \ucwords( $key, '_' ) ) );
+
+			$graphql_fields[ $camel_key ] = array(
+				'type'        => $type_map[ $type ] ?? 'String',
+				'description' => \sprintf( 'The %s meta field.', \str_replace( '_', ' ', $key ) ),
+				'resolve'     => static function ( $post ) use ( $key, $type ) {
+					$post_id = 0;
+					if ( isset( $post->ID ) ) {
+						$post_id = (int) $post->ID;
+					} elseif ( isset( $post->databaseId ) ) {
+						$post_id = (int) $post->databaseId;
+					}
+
+					if ( 0 === $post_id ) {
+						return 'boolean' === $type ? false : '';
+					}
+
+					$value = \get_post_meta( $post_id, $key, true );
+
+					if ( 'boolean' === $type ) {
+						return (bool) $value;
+					}
+
+					return \is_string( $value ) ? $value : '';
+				},
+			);
+		}
+
+		// Register the CommunityMeta object type.
+		\register_graphql_object_type(
+			'CommunityMeta',
+			array(
+				'description' => 'Custom meta fields for the Community post type.',
+				'fields'      => $graphql_fields,
+			)
+		);
+
+		// Register the communityMeta field on the Community type.
+		\register_graphql_field(
+			'Community',
+			'communityMeta',
+			array(
+				'type'        => 'CommunityMeta',
+				'description' => 'Community custom meta fields.',
+				'resolve'     => static function ( $post ) {
+					return $post;
+				},
+			)
+		);
 	}
 }
