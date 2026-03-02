@@ -9,6 +9,16 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
+## [v1.2.5] — 2026-03-02
+
+### Plugin Versions
+- **Community Listings CPT** v2.2.4
+- **Contentful Tables** v4.2.0
+- **GraphQL Shortcode Support** v1.2.1
+
+### Added
+- **community-listings:** Add `provider_listings` meta field to CommunityMeta GraphQL type (exposed as `providerListings`)
+
 ## [v1.2.4] — 2026-02-25
 
 ### Plugin Versions
@@ -124,7 +134,8 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ---
 
-[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.4...HEAD
+[Unreleased]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.5...HEAD
+[v1.2.5]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.4...v1.2.5
 [v1.2.4]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.3...v1.2.4
 [v1.2.3]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.2...v1.2.3
 [v1.2.2]: https://github.com/SilverAssist/contentful-wordpress-plugins/compare/v1.2.1...v1.2.2
