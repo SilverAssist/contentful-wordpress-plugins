@@ -82,7 +82,7 @@ final class ChartRenderer {
 	 * @since 4.0.0
 	 *
 	 * @param array<int, array<int, string>> $table_rows Table data rows.
-	 * @param string                          $label_prefix Prefix for numeric values.
+	 * @param string                         $label_prefix Prefix for numeric values.
 	 * @return string Rendered HTML.
 	 */
 	private static function render_table_source( array $table_rows, string $label_prefix ): string {

@@ -13,10 +13,7 @@
     <config name="minimum_wp_version" value="6.5"/>
     <config name="testVersion" value="8.2-"/>
 
-    <rule ref="WordPress-Extra">
-        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-    </rule>
+    <rule ref="SilverAssistWP"/>
 
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
