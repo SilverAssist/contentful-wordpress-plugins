@@ -1,8 +1,9 @@
 includes:
+    - vendor/silverassist/coding-standards/phpstan/base.neon
+    - vendor/silverassist/wp-coding-standards/phpstan/base.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-    level: 8
     paths:
         - includes
     bootstrapFiles:
