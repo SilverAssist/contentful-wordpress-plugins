@@ -96,28 +96,28 @@ final class CptRegistrar implements LoadableInterface {
 		);
 
 		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'show_in_rest'       => true,
-			'rest_base'          => 'community',
-			'query_var'          => true,
-			'rewrite'            => array(
+			'labels'              => $labels,
+			'public'              => true,
+			'publicly_queryable'  => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_rest'        => true,
+			'rest_base'           => 'community',
+			'query_var'           => true,
+			'rewrite'             => array(
 				'slug'       => 'communities',
 				'with_front' => false,
 			),
-			'capability_type'    => 'post',
-			'map_meta_cap'       => true,
-			'has_archive'        => true,
-			'hierarchical'       => true,
-			'menu_position'      => 5,
-			'menu_icon'          => 'dashicons-location-alt',
+			'capability_type'     => 'post',
+			'map_meta_cap'        => true,
+			'has_archive'         => true,
+			'hierarchical'        => true,
+			'menu_position'       => 5,
+			'menu_icon'           => 'dashicons-location-alt',
 			'show_in_graphql'     => true,
 			'graphql_single_name' => 'community',
 			'graphql_plural_name' => 'communities',
-			'supports'           => array(
+			'supports'            => array(
 				'title',
 				'editor',
 				'excerpt',
@@ -191,8 +191,12 @@ final class CptRegistrar implements LoadableInterface {
 				'resolve'     => static function ( $source ) use ( $key, $type ) {
 					$post_id = 0;
 
-					// WPGraphQL Model\Post — preferred.
+					// WPGraphQL Model\Post — preferred. `databaseId` is WPGraphQL's own
+					// property name on its Post model; it cannot be renamed to snake_case
+					// without breaking the property access.
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					if ( \is_object( $source ) && isset( $source->databaseId ) ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 						$post_id = (int) $source->databaseId;
 					} elseif ( $source instanceof \WP_Post ) {
 						$post_id = (int) $source->ID;

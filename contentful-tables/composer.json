@@ -10,6 +10,8 @@
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "phpstan/phpstan": "^2.1",
+        "silverassist/coding-standards": "^1.0",
+        "silverassist/wp-coding-standards": "^1.0",
         "szepeviktor/phpstan-wordpress": "^2.0",
         "wp-coding-standards/wpcs": "^3.1"
     },
@@ -22,7 +24,10 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.0"
+        }
     },
     "scripts": {
         "phpcs": "phpcs",

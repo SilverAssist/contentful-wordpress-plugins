@@ -51,15 +51,15 @@ final class GraphQLResolver implements LoadableInterface {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param mixed  $result         The resolved field value.
-	 * @param mixed       $source         The source object.
+	 * @param mixed        $result         The resolved field value.
+	 * @param mixed        $source         The source object.
 	 * @param array<mixed> $args           The field arguments.
-	 * @param mixed       $context        The AppContext.
-	 * @param mixed       $info           The ResolveInfo.
-	 * @param string      $type_name      The GraphQL type name.
-	 * @param string      $field_key      The field key.
-	 * @param mixed       $field_def      The field definition.
-	 * @param mixed       $field_resolver The field resolver.
+	 * @param mixed        $context        The AppContext.
+	 * @param mixed        $info           The ResolveInfo.
+	 * @param string       $type_name      The GraphQL type name.
+	 * @param string       $field_key      The field key.
+	 * @param mixed        $field_def      The field definition.
+	 * @param mixed        $field_resolver The field resolver.
 	 * @return mixed The result with shortcodes rendered.
 	 */
 	public function resolve_shortcodes(
