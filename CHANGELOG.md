@@ -15,7 +15,8 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ### Fixed
 - **community-listings:** Resolved all 3 pre-existing PHPStan errors — dead-code truthy check in `SettingsPage::render_settings_page()`, a `register_graphql_field()` call missing its own `function_exists()` guard, and an unreachable array-offset fallback in the GraphQL type-mapping refactored to a `match` expression
-- **Makefile:** `phpcs`/`phpstan` targets no longer silently ignore failures in any sub-plugin but the last one in `$(PLUGINS)` — the `for` loop now propagates a non-zero exit status, so CI actually fails when any sub-plugin has a real violation (it previously didn't: the 3 PHPStan errors above went undetected by CI since this repo's first PHPStan adoption)
+- **Makefile:** `phpcs`, `phpstan`, `install`, `install-dev`, and `build` targets no longer silently ignore failures in any sub-plugin but the last one in `$(PLUGINS)` — each `for` loop now propagates a non-zero exit status, so CI actually fails when any sub-plugin has a real violation (`phpcs`/`phpstan` previously didn't: the 3 PHPStan errors above went undetected by CI since this repo's first PHPStan adoption)
+- **Makefile:** `phpcs` target now calls `vendor/bin/phpcs --warning-severity=0` directly instead of `composer run phpcs`, matching exactly what CI's own PHPCS step runs — previously `make phpcs` treated pre-existing warnings (discouraged `json_encode()`/`file_get_contents()` calls, a missing nonce-verification annotation) as failures that CI itself was configured to ignore, so the two disagreed on what counted as passing
 
 ---
 

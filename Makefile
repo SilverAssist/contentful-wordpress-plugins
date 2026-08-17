@@ -21,18 +21,22 @@ help: ## Show this help message
 
 install: ## Install production dependencies for all plugins
 	@echo "$(BLUE)Installing production dependencies...$(NC)"
-	@for plugin in $(PLUGINS); do \
+	@status=0; \
+	for plugin in $(PLUGINS); do \
 		echo "Installing dependencies for $$plugin..."; \
-		(cd $$plugin && composer install --no-dev --optimize-autoloader); \
-	done
+		(cd $$plugin && composer install --no-dev --optimize-autoloader) || status=1; \
+	done; \
+	exit $$status
 	@echo "$(GREEN)✅ Production dependencies installed!$(NC)"
 
 install-dev: ## Install development dependencies for all plugins
 	@echo "$(BLUE)Installing development dependencies...$(NC)"
-	@for plugin in $(PLUGINS); do \
+	@status=0; \
+	for plugin in $(PLUGINS); do \
 		echo "Installing dev dependencies for $$plugin..."; \
-		(cd $$plugin && composer install); \
-	done
+		(cd $$plugin && composer install) || status=1; \
+	done; \
+	exit $$status
 	@echo "$(GREEN)✅ Development dependencies installed!$(NC)"
 
 clean: ## Clean vendor directories and caches
@@ -48,7 +52,7 @@ phpcs: ## Run PHP CodeSniffer on all plugins
 	@status=0; \
 	for plugin in $(PLUGINS); do \
 		echo "Checking $$plugin..."; \
-		(cd $$plugin && composer run phpcs) || status=1; \
+		(cd $$plugin && ./vendor/bin/phpcs --standard=phpcs.xml --warning-severity=0 .) || status=1; \
 	done; \
 	exit $$status
 	@echo "$(GREEN)✅ PHPCS completed!$(NC)"
@@ -77,7 +81,8 @@ test: install-dev phpcs phpstan ## Run all quality assurance tests
 build: clean install ## Build production-ready plugins
 	@echo "$(BLUE)Building production plugins...$(NC)"
 	@mkdir -p dist
-	@for plugin in $(PLUGINS); do \
+	@status=0; \
+	for plugin in $(PLUGINS); do \
 		echo "Building $$plugin..."; \
 		version=$$(grep "Version:" $$plugin/$$plugin.php | sed 's/.*Version: *//'); \
 		zip -r "dist/$$plugin-v$$version.zip" "$$plugin" \
@@ -85,8 +90,9 @@ build: clean install ## Build production-ready plugins
 			"$$plugin/phpcs.xml" "$$plugin/phpstan.neon" \
 			"$$plugin/composer.lock" "$$plugin/tests/*" \
 			"$$plugin/.DS_Store" "$$plugin/vendor/*/tests/*" \
-			"$$plugin/vendor/*/*/tests/*"; \
-	done
+			"$$plugin/vendor/*/*/tests/*" || status=1; \
+	done; \
+	exit $$status
 	@echo "$(GREEN)✅ Build completed! Check dist/ directory.$(NC)"
 
 release: test build ## Create release packages
