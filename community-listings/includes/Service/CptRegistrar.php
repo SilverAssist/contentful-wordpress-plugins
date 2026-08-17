@@ -191,8 +191,12 @@ final class CptRegistrar implements LoadableInterface {
 				'resolve'     => static function ( $source ) use ( $key, $type ) {
 					$post_id = 0;
 
-					// WPGraphQL Model\Post — preferred.
+					// WPGraphQL Model\Post — preferred. `databaseId` is WPGraphQL's own
+					// property name on its Post model; it cannot be renamed to snake_case
+					// without breaking the property access.
+					// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					if ( \is_object( $source ) && isset( $source->databaseId ) ) {
+						// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 						$post_id = (int) $source->databaseId;
 					} elseif ( $source instanceof \WP_Post ) {
 						$post_id = (int) $source->ID;
