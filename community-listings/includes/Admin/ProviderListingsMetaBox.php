@@ -261,6 +261,13 @@ final class ProviderListingsMetaBox implements LoadableInterface {
 				array( '%d', '%s', '%s' )
 			);
 		}
+
+		// The write above bypasses update_post_meta()/add_metadata() on purpose (they
+		// call wp_unslash() and would corrupt the JSON's \" escapes), but that also
+		// means WordPress' own cache invalidation never runs. Without this, a
+		// persistent object cache keeps serving the stale value to get_post_meta()
+		// callers — including the WPGraphQL resolver — until the cache group expires.
+		\wp_cache_delete( $post_id, 'post_meta' );
 	}
 
 	/**
