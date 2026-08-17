@@ -167,17 +167,9 @@ final class CptRegistrar implements LoadableInterface {
 	 * @return void
 	 */
 	public function register_graphql_meta_fields(): void {
-		if ( ! \function_exists( 'register_graphql_object_type' ) ) {
+		if ( ! \function_exists( 'register_graphql_object_type' ) || ! \function_exists( 'register_graphql_field' ) ) {
 			return;
 		}
-
-		// Map PHP meta types to GraphQL scalar types.
-		$type_map = array(
-			'string'  => 'String',
-			'boolean' => 'Boolean',
-			'integer' => 'Int',
-			'number'  => 'Float',
-		);
 
 		// Build the fields array for the CommunityMeta object type.
 		$graphql_fields = array();
@@ -186,7 +178,14 @@ final class CptRegistrar implements LoadableInterface {
 			$camel_key = \lcfirst( \str_replace( '_', '', \ucwords( $key, '_' ) ) );
 
 			$graphql_fields[ $camel_key ] = array(
-				'type'        => $type_map[ $type ] ?? 'String',
+				// Maps PHP meta types to GraphQL scalar types. The default arm is a
+				// Only 'boolean' and 'string' occur in META_FIELDS today; the default
+				// arm is a real fallback for a future entry using another type
+				// (e.g. 'integer'/'number') rather than dead code.
+				'type'        => match ( $type ) {
+					'boolean' => 'Boolean',
+					default   => 'String',
+				},
 				'description' => \sprintf( 'The %s meta field.', \str_replace( '_', ' ', $key ) ),
 				'resolve'     => static function ( $source ) use ( $key, $type ) {
 					$post_id = 0;

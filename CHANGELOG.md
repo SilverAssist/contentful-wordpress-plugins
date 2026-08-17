@@ -7,6 +7,17 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ## [Unreleased]
 
+### Added
+- **community-listings:** Admin meta box ("Provider Listings") on the `community` post type editor, city-level posts only — lets editors view/update the `provider_listings` JSON without CLI access. JSON-safe save via `$wpdb->update()`/`insert()` (avoids `update_post_meta()`'s `wp_unslash()` corrupting `\"` escapes), with byte/provider counts, client-side validation, and post-meta cache invalidation after the direct write (#2)
+
+### Changed
+- Adopted the `SilverAssistWP` PHPCS ruleset and composed shared `silverassist/coding-standards` + `silverassist/wp-coding-standards` PHPStan base configs across all three sub-plugins, replacing hand-rolled rulesets and duplicated static-analysis baselines (#3)
+
+### Fixed
+- **community-listings:** Resolved all 3 pre-existing PHPStan errors — dead-code truthy check in `SettingsPage::render_settings_page()`, a `register_graphql_field()` call missing its own `function_exists()` guard, and an unreachable array-offset fallback in the GraphQL type-mapping refactored to a `match` expression
+- **Makefile:** `phpcs`, `phpstan`, `install`, `install-dev`, and `build` targets no longer silently ignore failures in any sub-plugin but the last one in `$(PLUGINS)` — each `for` loop now propagates a non-zero exit status, so CI actually fails when any sub-plugin has a real violation (`phpcs`/`phpstan` previously didn't: the 3 PHPStan errors above went undetected by CI since this repo's first PHPStan adoption)
+- **Makefile:** `phpcs` target now calls `vendor/bin/phpcs --warning-severity=0` directly instead of `composer run phpcs`, matching exactly what CI's own PHPCS step runs — previously `make phpcs` treated pre-existing warnings (discouraged `json_encode()`/`file_get_contents()` calls, a missing nonce-verification annotation) as failures that CI itself was configured to ignore, so the two disagreed on what counted as passing
+
 ---
 
 ## [v1.2.5] — 2026-03-02
