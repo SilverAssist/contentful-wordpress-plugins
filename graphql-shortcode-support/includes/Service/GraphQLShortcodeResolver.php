@@ -12,7 +12,7 @@
 
 namespace SilverAssist\GraphQLShortcodeSupport\Service;
 
-use SilverAssist\GraphQLShortcodeSupport\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 
 // Prevent direct access.
 \defined( 'ABSPATH' ) || exit;

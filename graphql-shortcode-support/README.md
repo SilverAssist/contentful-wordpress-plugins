@@ -116,9 +116,7 @@ graphql-shortcode-support/
 ├── README.md
 └── includes/
     ├── Core/
-    │   ├── Interfaces/
-    │   │   └── LoadableInterface.php # Component contract
-    │   ├── Plugin.php                # Singleton bootstrap
+    │   ├── Plugin.php                # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
     │   └── Activator.php            # Activation/deactivation
     ├── Service/
     │   └── GraphQLShortcodeResolver.php  # Core shortcode resolver

@@ -12,8 +12,8 @@ declare( strict_types=1 );
 
 namespace SilverAssist\ContentfulTables\Service;
 
-use SilverAssist\ContentfulTables\Core\Interfaces\LoadableInterface;
 use SilverAssist\ContentfulTables\Utils\CsvParser;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 
 /**
  * Loads table, chart, and card data from files, post meta, and database.
@@ -23,6 +23,37 @@ use SilverAssist\ContentfulTables\Utils\CsvParser;
  * @since 4.0.0
  */
 final class TableDataLoader implements LoadableInterface {
+
+	/**
+	 * Singleton instance.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Prevent direct instantiation — use instance(). Other components that
+	 * need the shared loaded data call TableDataLoader::instance() rather
+	 * than receiving it via constructor injection, so this class can be a
+	 * kernel-managed LoadableInterface component (AbstractPlugin's
+	 * load_components() calls $class::instance() with no arguments).
+	 *
+	 * @since 4.3.0
+	 */
+	private function __construct() {}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
 
 	/**
 	 * Loaded table data keyed by entry ID.
@@ -58,8 +89,19 @@ final class TableDataLoader implements LoadableInterface {
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 10;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -69,7 +111,7 @@ final class TableDataLoader implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_action( 'init', array( $this, 'load_all_data' ) );
 	}
 

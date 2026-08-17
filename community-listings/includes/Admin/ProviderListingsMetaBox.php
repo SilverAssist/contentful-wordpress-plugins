@@ -12,7 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Admin;
 
-use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 
 /**
  * Registers and handles provider_listings meta box editing.
@@ -20,6 +20,33 @@ use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
  * @since 2.2.5
  */
 final class ProviderListingsMetaBox implements LoadableInterface {
+
+	/**
+	 * Singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Prevent direct instantiation — use instance().
+	 *
+	 * @since 2.3.0
+	 */
+	private function __construct() {}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
 
 	/**
 	 * Nonce action.
@@ -64,8 +91,19 @@ final class ProviderListingsMetaBox implements LoadableInterface {
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 25;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -75,7 +113,7 @@ final class ProviderListingsMetaBox implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_action( 'add_meta_boxes_community', array( $this, 'register_meta_box' ) );
 		\add_action( 'save_post_community', array( $this, 'save_provider_listings' ), 10, 3 );
 		\add_action( 'admin_notices', array( $this, 'render_invalid_json_notice' ) );

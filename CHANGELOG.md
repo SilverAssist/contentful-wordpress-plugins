@@ -7,6 +7,9 @@ Individual plugin versions are tracked separately in their respective plugin hea
 
 ## [Unreleased]
 
+### Changed
+- Adopted `silverassist/wp-plugin-kernel` in all three sub-plugins, replacing each one's own duplicated `LoadableInterface`/`Plugin` bootstrap with the shared `AbstractPlugin` — components now implement `get_priority()`/`should_load()`/`init()` (the kernel's contract) instead of the old local `priority()`/`register()`. In `contentful-tables`, `TableDataLoader` became a proper singleton (`ShortcodeRegistrar`/`SettingsPage` now fetch it via `TableDataLoader::instance()` instead of constructor injection), since kernel-managed components are instantiated with no arguments.
+
 ### Added
 - **community-listings:** Admin meta box ("Provider Listings") on the `community` post type editor, city-level posts only — lets editors view/update the `provider_listings` JSON without CLI access. JSON-safe save via `$wpdb->update()`/`insert()` (avoids `update_post_meta()`'s `wp_unslash()` corrupting `\"` escapes), with byte/provider counts, client-side validation, and post-meta cache invalidation after the direct write (#2)
 

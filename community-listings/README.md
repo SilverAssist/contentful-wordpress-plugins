@@ -24,9 +24,7 @@ community-listings/
 ├── includes/
 │   ├── Core/
 │   │   ├── Activator.php              # Activation/deactivation handlers
-│   │   ├── Interfaces/
-│   │   │   └── LoadableInterface.php  # Component contract
-│   │   └── Plugin.php                 # Singleton bootstrap
+│   │   └── Plugin.php                 # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
 │   └── Service/
 │       ├── CptRegistrar.php           # CPT + meta field registration (priority 10)
 │       ├── GraphQLResolver.php        # WPGraphQL do_shortcode() (priority 20)

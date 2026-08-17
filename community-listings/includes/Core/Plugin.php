@@ -14,82 +14,36 @@ namespace SilverAssist\CommunityListings\Core;
 
 use SilverAssist\CommunityListings\Admin\ProviderListingsMetaBox;
 use SilverAssist\CommunityListings\Admin\SettingsPage;
-use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
 use SilverAssist\CommunityListings\Service\CptRegistrar;
 use SilverAssist\CommunityListings\Service\GraphQLResolver;
 use SilverAssist\CommunityListings\Service\RestApiFilters;
+use SilverAssist\PluginKernel\AbstractPlugin;
 
 /**
  * Singleton that bootstraps the plugin.
  *
+ * Singleton access (instance()) and the priority-ordered component loading
+ * loop are inherited from AbstractPlugin (silverassist/wp-plugin-kernel) —
+ * this class only declares which components to load.
+ *
  * @since 2.0.0
  */
-final class Plugin {
+final class Plugin extends AbstractPlugin {
 
 	/**
-	 * Singleton instance.
+	 * List the component classes this plugin loads.
 	 *
-	 * @since 2.0.0
+	 * @since 2.3.0
 	 *
-	 * @var self|null
+	 * @return array<class-string>
 	 */
-	private static ?self $instance = null;
-
-	/**
-	 * Registered loadable components.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @var LoadableInterface[]
-	 */
-	private array $components = array();
-
-	/**
-	 * Prevent direct instantiation.
-	 *
-	 * @since 2.0.0
-	 */
-	private function __construct() {}
-
-	/**
-	 * Return the singleton instance.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return self Plugin instance.
-	 */
-	public static function instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Initialise all plugin components.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		$this->components = array(
-			new CptRegistrar(),
-			new RestApiFilters(),
-			new GraphQLResolver(),
-			new ProviderListingsMetaBox(),
-			new SettingsPage(),
+	protected function get_components(): array {
+		return array(
+			CptRegistrar::class,
+			RestApiFilters::class,
+			GraphQLResolver::class,
+			ProviderListingsMetaBox::class,
+			SettingsPage::class,
 		);
-
-		// Sort by priority ascending.
-		\usort(
-			$this->components,
-			static fn ( LoadableInterface $a, LoadableInterface $b ): int => $a->priority() <=> $b->priority()
-		);
-
-		// Register hooks.
-		foreach ( $this->components as $component ) {
-			$component->register();
-		}
 	}
 }

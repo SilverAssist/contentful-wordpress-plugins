@@ -10,7 +10,9 @@
 
 namespace SilverAssist\GraphQLShortcodeSupport\Core;
 
-use SilverAssist\GraphQLShortcodeSupport\Core\Interfaces\LoadableInterface;
+use SilverAssist\GraphQLShortcodeSupport\Admin\SettingsPage;
+use SilverAssist\GraphQLShortcodeSupport\Service\GraphQLShortcodeResolver;
+use SilverAssist\PluginKernel\AbstractPlugin;
 
 // Prevent direct access.
 \defined( 'ABSPATH' ) || exit;
@@ -18,111 +20,28 @@ use SilverAssist\GraphQLShortcodeSupport\Core\Interfaces\LoadableInterface;
 /**
  * Plugin singleton class.
  *
+ * Singleton access (instance()) and the priority-ordered component loading
+ * loop are inherited from AbstractPlugin (silverassist/wp-plugin-kernel) —
+ * this class only declares which components to load. This plugin's own
+ * component classes already used the same get_priority()/should_load()/
+ * init() method names as the kernel interface before this migration, so no
+ * changes were needed there.
+ *
  * @since 1.0.0
  */
-class Plugin implements LoadableInterface {
-
-	/**
-	 * Plugin instance.
-	 *
-	 * @var Plugin|null
-	 */
-	private static ?Plugin $instance = null;
-
-	/**
-	 * Initialization flag.
-	 *
-	 * @var bool
-	 */
-	private bool $initialized = false;
-
-	/**
-	 * Get plugin instance.
-	 *
-	 * @return Plugin
-	 */
-	public static function instance(): Plugin {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Private constructor to prevent direct instantiation.
-	 */
-	private function __construct() {
-		// Initialization happens in init().
-	}
-
-	/**
-	 * Initialize plugin.
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		if ( $this->initialized ) {
-			return;
-		}
-
-		$this->load_components();
-
-		$this->initialized = true;
-	}
-
-	/**
-	 * Get loading priority.
-	 *
-	 * @return int
-	 */
-	public function get_priority(): int {
-		return 10;
-	}
-
-	/**
-	 * Should this component load?
-	 *
-	 * @return bool
-	 */
-	public function should_load(): bool {
-		return true;
-	}
+class Plugin extends AbstractPlugin {
 
 	/**
 	 * Get components to load.
 	 *
-	 * @return array<class-string<LoadableInterface>>
-	 */
-	private function get_components(): array {
-		return [
-			\SilverAssist\GraphQLShortcodeSupport\Service\GraphQLShortcodeResolver::class,
-			\SilverAssist\GraphQLShortcodeSupport\Admin\SettingsPage::class,
-		];
-	}
-
-	/**
-	 * Load all components by priority.
+	 * @since 1.1.0
 	 *
-	 * @return void
+	 * @return array<class-string>
 	 */
-	private function load_components(): void {
-		$components = [];
-
-		foreach ( $this->get_components() as $class ) {
-			if ( method_exists( $class, 'instance' ) ) {
-				$instance = $class::instance();
-				if ( $instance->should_load() ) {
-					$components[] = $instance;
-				}
-			}
-		}
-
-		// Sort by priority (lower first).
-		usort( $components, fn( $a, $b ) => $a->get_priority() <=> $b->get_priority() );
-
-		// Initialize all.
-		foreach ( $components as $component ) {
-			$component->init();
-		}
+	protected function get_components(): array {
+		return [
+			GraphQLShortcodeResolver::class,
+			SettingsPage::class,
+		];
 	}
 }
