@@ -12,6 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Core;
 
+use SilverAssist\CommunityListings\Admin\ProviderListingsMetaBox;
 use SilverAssist\CommunityListings\Admin\SettingsPage;
 use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
 use SilverAssist\CommunityListings\Service\CptRegistrar;
@@ -76,6 +77,7 @@ final class Plugin {
 			new CptRegistrar(),
 			new RestApiFilters(),
 			new GraphQLResolver(),
+			new ProviderListingsMetaBox(),
 			new SettingsPage(),
 		);
 
