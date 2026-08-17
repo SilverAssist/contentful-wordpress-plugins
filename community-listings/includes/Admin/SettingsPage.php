@@ -114,11 +114,9 @@ final class SettingsPage implements LoadableInterface {
 			return;
 		}
 
-		$community_count = \wp_count_posts( 'community' );
-		$total           = 0;
-		if ( $community_count ) {
-			$total = (int) $community_count->publish;
-		}
+		// wp_count_posts() always returns an object per its own type signature, never
+		// false — the previous truthy-check here was unreachable dead code.
+		$total = (int) \wp_count_posts( 'community' )->publish;
 
 		?>
 		<div class="wrap silverassist-settings-page">

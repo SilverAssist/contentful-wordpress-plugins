@@ -45,10 +45,12 @@ clean: ## Clean vendor directories and caches
 
 phpcs: ## Run PHP CodeSniffer on all plugins
 	@echo "$(BLUE)Running PHPCS on all plugins...$(NC)"
-	@for plugin in $(PLUGINS); do \
+	@status=0; \
+	for plugin in $(PLUGINS); do \
 		echo "Checking $$plugin..."; \
-		(cd $$plugin && composer run phpcs); \
-	done
+		(cd $$plugin && composer run phpcs) || status=1; \
+	done; \
+	exit $$status
 	@echo "$(GREEN)✅ PHPCS completed!$(NC)"
 
 phpcs-fix: ## Fix PHP CodeSniffer issues automatically
@@ -61,10 +63,12 @@ phpcs-fix: ## Fix PHP CodeSniffer issues automatically
 
 phpstan: ## Run PHPStan static analysis on all plugins
 	@echo "$(BLUE)Running PHPStan on all plugins...$(NC)"
-	@for plugin in $(PLUGINS); do \
+	@status=0; \
+	for plugin in $(PLUGINS); do \
 		echo "Analyzing $$plugin..."; \
-		(cd $$plugin && composer run phpstan); \
-	done
+		(cd $$plugin && composer run phpstan) || status=1; \
+	done; \
+	exit $$status
 	@echo "$(GREEN)✅ PHPStan analysis completed!$(NC)"
 
 test: install-dev phpcs phpstan ## Run all quality assurance tests
