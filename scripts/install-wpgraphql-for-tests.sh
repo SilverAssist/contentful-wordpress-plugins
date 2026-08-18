@@ -75,9 +75,15 @@ if [ -d "$GRAPHQL_PLUGIN_DIR" ]; then
 	if [[ "$FORCE_GRAPHQL_REINSTALL" == "true" ]] || [[ "$CI" == "true" ]] || [[ "$GITHUB_ACTIONS" == "true" ]] || [[ "$CONTINUOUS_INTEGRATION" == "true" ]]; then
 		print_warning "Non-interactive mode: Automatically reinstalling WPGraphQL"
 		REPLY="y"
-	else
+	elif [ -t 0 ]; then
 		read -p "Do you want to reinstall WPGraphQL? (y/N): " -n 1 -r
 		echo
+	else
+		# No TTY on stdin (e.g. invoked from `make`) and none of the CI flags above are
+		# set: `read` would hit EOF immediately and, under `set -e`, kill the script
+		# with no explanation. Default to keeping the existing install rather than that.
+		print_warning "Non-interactive shell with no CI flag set: keeping existing WPGraphQL install"
+		REPLY="n"
 	fi
 
 	if [[ ! $REPLY =~ ^[Yy]$ ]]; then

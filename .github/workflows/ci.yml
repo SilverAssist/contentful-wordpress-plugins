@@ -9,10 +9,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         php-version: [8.2, 8.3, 8.4]
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - uses: actions/checkout@v7
@@ -21,8 +31,11 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl
+        extensions: mbstring, intl, mysqli, pdo_mysql
         coverage: none
+
+    - name: Install system dependencies
+      run: sudo apt-get update && sudo apt-get install -y subversion
 
     - name: Validate composer.json files
       run: |
@@ -51,6 +64,11 @@ jobs:
 
     - name: Run PHPStan
       run: make phpstan
+
+    - name: Run PHPUnit
+      env:
+        WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      run: make test-integration DB_HOST=127.0.0.1
 
     - name: Build distribution packages
       run: make build
