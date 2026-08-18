@@ -21,7 +21,11 @@ community-listings/
 ├── composer.json                      # Composer config with PSR-4 autoload
 ├── phpcs.xml                          # WPCS configuration
 ├── phpstan.neon                       # PHPStan Level 8 configuration
+├── phpunit.xml                        # PHPUnit configuration
 ├── includes/
+│   ├── Admin/
+│   │   ├── ProviderListingsMetaBox.php # Provider Listings meta box (priority 25)
+│   │   └── SettingsPage.php           # Admin settings UI (priority 30)
 │   ├── Core/
 │   │   ├── Activator.php              # Activation/deactivation handlers
 │   │   └── Plugin.php                 # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
@@ -29,6 +33,10 @@ community-listings/
 │       ├── CptRegistrar.php           # CPT + meta field registration (priority 10)
 │       ├── GraphQLResolver.php        # WPGraphQL do_shortcode() (priority 20)
 │       └── RestApiFilters.php         # REST API query filters (priority 20)
+└── tests/
+    ├── bootstrap.php                  # PHPUnit bootstrap (WP test suite + WPGraphQL)
+    ├── Unit/                          # Business-logic tests
+    └── Integration/                   # WPGraphQL registration tests
 ```
 
 ### Component Loading Order

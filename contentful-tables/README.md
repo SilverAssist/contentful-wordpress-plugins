@@ -21,6 +21,7 @@ contentful-tables/
 ├── composer.json                      # Composer config with PSR-4 autoload
 ├── phpcs.xml                          # WPCS configuration
 ├── phpstan.neon                       # PHPStan Level 8 configuration
+├── phpunit.xml                        # PHPUnit configuration
 ├── includes/
 │   ├── Admin/
 │   │   └── SettingsPage.php           # Admin settings page (priority 30)
@@ -40,8 +41,12 @@ contentful-tables/
 │       ├── FormRenderer.php           # Form HTML renderer
 │       ├── TableRenderer.php          # Data table HTML renderer
 │       └── TocRenderer.php            # Table of contents HTML renderer
-└── assets/
-    └── contentful-tables.css          # Optional external stylesheet
+├── assets/
+│   └── contentful-tables.css          # Optional external stylesheet
+└── tests/
+    ├── bootstrap.php                  # PHPUnit bootstrap (WP test suite + WPGraphQL)
+    ├── Unit/                          # Business-logic tests
+    └── Integration/                   # WPGraphQL registration tests
 ```
 
 ### Component Loading Order

@@ -158,10 +158,18 @@ final class YourComponent implements LoadableInterface {
 - **PHPCS**: Code standards compliance
 - **PHPStan**: Static analysis
 - **Composer validation**: Dependency management
+- **PHPUnit**: Unit + WPGraphQL integration tests (per sub-plugin, `tests/Unit` and `tests/Integration`)
 
-Run all tests:
+Run linting/static analysis for all sub-plugins:
 ```bash
 make test
+```
+
+Run a sub-plugin's PHPUnit suite (requires a WordPress test environment — set up once, shared by all three sub-plugins):
+```bash
+bash scripts/install-wp-tests.sh wordpress_test root '' localhost latest
+bash scripts/install-wpgraphql-for-tests.sh
+cd community-listings && WP_TESTS_DIR=/tmp/wordpress-tests-lib composer run phpunit
 ```
 
 ## 📤 Pull Request Process

@@ -46,10 +46,10 @@ composer.phar
 composer.lock
 
 # PHPUnit
-/phpunit.xml
 /phpunit.xml.dist
-/.phpunit.result.cache
-/coverage/
+**/.phpunit.result.cache
+**/tests/coverage/
+**/tests/results/
 
 # PHP CS Fixer
 .php_cs.cache
