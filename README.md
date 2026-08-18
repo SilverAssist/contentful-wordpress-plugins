@@ -197,6 +197,18 @@ make phpstan      # Static analysis (Level 8)
 make lint         # Run PHPCS + PHPStan together
 ```
 
+### Automated Tests
+
+Each sub-plugin has its own PHPUnit suite (`tests/Unit`, `tests/Integration`) covering business logic and
+WPGraphQL registration behavior. They share one WordPress test environment, set up once:
+
+```bash
+bash scripts/install-wp-tests.sh wordpress_test root '' localhost latest
+bash scripts/install-wpgraphql-for-tests.sh
+
+cd community-listings && WP_TESTS_DIR=/tmp/wordpress-tests-lib composer run phpunit
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository

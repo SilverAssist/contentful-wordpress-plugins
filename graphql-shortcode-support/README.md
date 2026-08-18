@@ -113,15 +113,20 @@ graphql-shortcode-support/
 ├── composer.json                     # Composer config & PSR-4
 ├── phpcs.xml                         # WPCS configuration
 ├── phpstan.neon                      # PHPStan Level 8
+├── phpunit.xml                       # PHPUnit configuration
 ├── README.md
-└── includes/
-    ├── Core/
-    │   ├── Plugin.php                # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
-    │   └── Activator.php            # Activation/deactivation
-    ├── Service/
-    │   └── GraphQLShortcodeResolver.php  # Core shortcode resolver
-    └── Admin/
-        └── SettingsPage.php         # Admin settings UI
+├── includes/
+│   ├── Core/
+│   │   ├── Plugin.php                # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
+│   │   └── Activator.php            # Activation/deactivation
+│   ├── Service/
+│   │   └── GraphQLShortcodeResolver.php  # Core shortcode resolver
+│   └── Admin/
+│       └── SettingsPage.php         # Admin settings UI
+└── tests/
+    ├── bootstrap.php                 # PHPUnit bootstrap (WP test suite + WPGraphQL)
+    ├── Unit/                         # Business-logic tests
+    └── Integration/                  # WPGraphQL registration tests
 ```
 
 ## Development

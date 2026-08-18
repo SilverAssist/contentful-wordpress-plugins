@@ -433,7 +433,7 @@ final class TableDataLoader implements LoadableInterface {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$results = $wpdb->get_results(
 			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is prefixed, not user input.
-			"SELECT table_id, table_data FROM {$table_name}",
+			"SELECT entry_id, table_data FROM {$table_name}",
 			ARRAY_A
 		);
 
@@ -444,7 +444,7 @@ final class TableDataLoader implements LoadableInterface {
 		foreach ( $results as $row ) {
 			$table_data = \json_decode( $row['table_data'], true );
 			if ( $table_data ) {
-				$this->tables_data[ $row['table_id'] ] = $table_data;
+				$this->tables_data[ $row['entry_id'] ] = $table_data;
 			}
 		}
 	}

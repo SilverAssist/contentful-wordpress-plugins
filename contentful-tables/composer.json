@@ -10,15 +10,23 @@
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "php-stubs/wordpress-tests-stubs": "^6.6",
         "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^9.6",
         "silverassist/coding-standards": "^1.0",
         "silverassist/wp-coding-standards": "^1.0",
         "szepeviktor/phpstan-wordpress": "^2.0",
-        "wp-coding-standards/wpcs": "^3.1"
+        "wp-coding-standards/wpcs": "^3.1",
+        "yoast/phpunit-polyfills": "^4.0"
     },
     "autoload": {
         "psr-4": {
             "SilverAssist\\ContentfulTables\\": "includes/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SilverAssist\\ContentfulTables\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -32,6 +40,13 @@
     },
     "scripts": {
         "phpcs": "phpcs",
-        "phpstan": "phpstan analyse --memory-limit=512M"
+        "phpcbf": "phpcbf",
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpunit": "phpunit",
+        "test": [
+            "@phpcs",
+            "@phpstan",
+            "@phpunit"
+        ]
     }
 }
