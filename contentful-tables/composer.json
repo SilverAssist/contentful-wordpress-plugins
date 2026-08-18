@@ -5,6 +5,7 @@
     "license": "proprietary",
     "require": {
         "php": ">=8.2",
+        "silverassist/wp-plugin-kernel": "^1.0",
         "silverassist/wp-settings-hub": "^1.1"
     },
     "require-dev": {

@@ -12,7 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Service;
 
-use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 
 /**
  * Registers the Community custom post type and meta fields.
@@ -22,6 +22,33 @@ use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
  * @since 2.0.0
  */
 final class CptRegistrar implements LoadableInterface {
+
+	/**
+	 * Singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Prevent direct instantiation — use instance().
+	 *
+	 * @since 2.3.0
+	 */
+	private function __construct() {}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
 
 	/**
 	 * Meta fields with their types.
@@ -53,8 +80,19 @@ final class CptRegistrar implements LoadableInterface {
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 10;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -64,7 +102,7 @@ final class CptRegistrar implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_action( 'init', array( self::class, 'register_post_type' ) );
 		\add_action( 'init', array( $this, 'register_meta' ) );
 		\add_action( 'graphql_register_types', array( $this, 'register_graphql_meta_fields' ) );

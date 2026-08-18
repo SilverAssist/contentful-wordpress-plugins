@@ -13,85 +13,38 @@ declare( strict_types=1 );
 namespace SilverAssist\ContentfulTables\Core;
 
 use SilverAssist\ContentfulTables\Admin\SettingsPage;
-use SilverAssist\ContentfulTables\Core\Interfaces\LoadableInterface;
 use SilverAssist\ContentfulTables\Service\GraphQLResolver;
 use SilverAssist\ContentfulTables\Service\ShortcodeRegistrar;
 use SilverAssist\ContentfulTables\Service\TableDataLoader;
+use SilverAssist\PluginKernel\AbstractPlugin;
 
 /**
  * Singleton that bootstraps the plugin.
  *
+ * Singleton access (instance()) and the priority-ordered component loading
+ * loop are inherited from AbstractPlugin (silverassist/wp-plugin-kernel) —
+ * this class only declares which components to load. TableDataLoader is
+ * itself a kernel-managed singleton component now; ShortcodeRegistrar and
+ * SettingsPage fetch it via TableDataLoader::instance() in their own
+ * constructors instead of receiving it injected here.
+ *
  * @since 4.0.0
  */
-final class Plugin {
+final class Plugin extends AbstractPlugin {
 
 	/**
-	 * Singleton instance.
+	 * List the component classes this plugin loads.
 	 *
-	 * @since 4.0.0
+	 * @since 4.3.0
 	 *
-	 * @var self|null
+	 * @return array<class-string>
 	 */
-	private static ?self $instance = null;
-
-	/**
-	 * Registered loadable components.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @var LoadableInterface[]
-	 */
-	private array $components = array();
-
-	/**
-	 * Prevent direct instantiation.
-	 *
-	 * @since 4.0.0
-	 */
-	private function __construct() {}
-
-	/**
-	 * Return the singleton instance.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return self Plugin instance.
-	 */
-	public static function instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * Initialise all plugin components.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		// Build shared data loader.
-		$data_loader = new TableDataLoader();
-
-		// Register components by priority.
-		$this->components = array(
-			$data_loader,
-			new ShortcodeRegistrar( $data_loader ),
-			new GraphQLResolver(),
-			new SettingsPage( $data_loader ),
+	protected function get_components(): array {
+		return array(
+			TableDataLoader::class,
+			ShortcodeRegistrar::class,
+			GraphQLResolver::class,
+			SettingsPage::class,
 		);
-
-		// Sort by priority ascending.
-		\usort(
-			$this->components,
-			static fn ( LoadableInterface $a, LoadableInterface $b ): int => $a->priority() <=> $b->priority()
-		);
-
-		// Register hooks.
-		foreach ( $this->components as $component ) {
-			$component->register();
-		}
 	}
 }

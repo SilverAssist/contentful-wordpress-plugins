@@ -12,7 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Admin;
 
-use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 use SilverAssist\SettingsHub\SettingsHub;
 
 /**
@@ -36,14 +36,52 @@ final class SettingsPage implements LoadableInterface {
 	private const PLUGIN_SLUG = 'community-listings';
 
 	/**
+	 * Singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Prevent direct instantiation — use instance().
+	 *
+	 * @since 2.3.0
+	 */
+	private function __construct() {}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
+
+	/**
 	 * Return the loading priority.
 	 *
 	 * @since 2.1.0
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 30;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -53,7 +91,7 @@ final class SettingsPage implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_action( 'init', array( $this, 'register_with_settings_hub' ) );
 	}
 

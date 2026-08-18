@@ -117,12 +117,31 @@ Components load with specific priorities:
 - **30**: UI components (admin pages)
 
 ### Interface Implementation
-All loadable components must implement `LoadableInterface`:
+All loadable components must implement `LoadableInterface` from `silverassist/wp-plugin-kernel`, and expose a static `instance()` method (the kernel loads components via `$class::instance()`):
 
 ```php
-interface LoadableInterface {
-    public function priority(): int;
-    public function register(): void;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
+
+final class YourComponent implements LoadableInterface {
+    private static ?self $instance = null;
+
+    private function __construct() {}
+
+    public static function instance(): self {
+        return self::$instance ??= new self();
+    }
+
+    public function get_priority(): int {
+        return 20;
+    }
+
+    public function should_load(): bool {
+        return true;
+    }
+
+    public function init(): void {
+        // Register WordPress hooks here.
+    }
 }
 ```
 

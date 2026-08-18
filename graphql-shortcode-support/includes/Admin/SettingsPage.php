@@ -11,7 +11,7 @@
 
 namespace SilverAssist\GraphQLShortcodeSupport\Admin;
 
-use SilverAssist\GraphQLShortcodeSupport\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 use SilverAssist\SettingsHub\SettingsHub;
 
 // Prevent direct access.

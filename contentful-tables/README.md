@@ -26,9 +26,7 @@ contentful-tables/
 │   │   └── SettingsPage.php           # Admin settings page (priority 30)
 │   ├── Core/
 │   │   ├── Activator.php              # Activation/deactivation handlers
-│   │   ├── Interfaces/
-│   │   │   └── LoadableInterface.php  # Component contract
-│   │   └── Plugin.php                 # Singleton bootstrap
+│   │   └── Plugin.php                 # Singleton bootstrap (extends wp-plugin-kernel's AbstractPlugin)
 │   ├── Service/
 │   │   ├── GraphQLResolver.php        # WPGraphQL do_shortcode() (priority 20)
 │   │   ├── ShortcodeRegistrar.php     # Shortcode registration (priority 20)

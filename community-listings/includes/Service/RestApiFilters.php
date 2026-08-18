@@ -12,7 +12,7 @@ declare( strict_types=1 );
 
 namespace SilverAssist\CommunityListings\Service;
 
-use SilverAssist\CommunityListings\Core\Interfaces\LoadableInterface;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 use WP_REST_Request;
 
 /**
@@ -25,14 +25,52 @@ use WP_REST_Request;
 final class RestApiFilters implements LoadableInterface {
 
 	/**
+	 * Singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
+	 * Prevent direct instantiation — use instance().
+	 *
+	 * @since 2.3.0
+	 */
+	private function __construct() {}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
+	}
+
+	/**
 	 * Return the loading priority.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 20;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -42,7 +80,7 @@ final class RestApiFilters implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_filter( 'rest_community_query', array( $this, 'filter_query' ), 10, 2 );
 		\add_filter( 'rest_community_collection_params', array( $this, 'register_params' ) );
 	}

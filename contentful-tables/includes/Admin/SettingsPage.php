@@ -12,8 +12,8 @@ declare( strict_types=1 );
 
 namespace SilverAssist\ContentfulTables\Admin;
 
-use SilverAssist\ContentfulTables\Core\Interfaces\LoadableInterface;
 use SilverAssist\ContentfulTables\Service\TableDataLoader;
+use SilverAssist\PluginKernel\Interfaces\LoadableInterface;
 use SilverAssist\SettingsHub\SettingsHub;
 
 /**
@@ -26,6 +26,15 @@ use SilverAssist\SettingsHub\SettingsHub;
 final class SettingsPage implements LoadableInterface {
 
 	/**
+	 * Singleton instance.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @var self|null
+	 */
+	private static ?self $instance = null;
+
+	/**
 	 * Shared data loader.
 	 *
 	 * @since 4.0.0
@@ -35,14 +44,26 @@ final class SettingsPage implements LoadableInterface {
 	private TableDataLoader $data_loader;
 
 	/**
-	 * Constructor.
+	 * Prevent direct instantiation — use instance(). Fetches the shared
+	 * TableDataLoader singleton rather than receiving it via constructor
+	 * injection, since kernel-managed components are instantiated with
+	 * $class::instance() and no arguments.
 	 *
-	 * @since 4.0.0
-	 *
-	 * @param TableDataLoader $data_loader Shared data loader instance.
+	 * @since 4.3.0
 	 */
-	public function __construct( TableDataLoader $data_loader ) {
-		$this->data_loader = $data_loader;
+	private function __construct() {
+		$this->data_loader = TableDataLoader::instance();
+	}
+
+	/**
+	 * Return the singleton instance.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return self
+	 */
+	public static function instance(): self {
+		return self::$instance ??= new self();
 	}
 
 	/**
@@ -52,8 +73,19 @@ final class SettingsPage implements LoadableInterface {
 	 *
 	 * @return int Loading priority.
 	 */
-	public function priority(): int {
+	public function get_priority(): int {
 		return 30;
+	}
+
+	/**
+	 * Whether this component should load.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return bool
+	 */
+	public function should_load(): bool {
+		return true;
 	}
 
 	/**
@@ -63,7 +95,7 @@ final class SettingsPage implements LoadableInterface {
 	 *
 	 * @return void
 	 */
-	public function register(): void {
+	public function init(): void {
 		\add_action( 'init', array( $this, 'register_with_settings_hub' ) );
 	}
 
