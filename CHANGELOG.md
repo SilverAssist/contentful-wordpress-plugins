@@ -8,6 +8,7 @@ Individual plugin versions are tracked separately in their respective plugin hea
 ## [Unreleased]
 
 ### Changed
+- Bumped `actions/checkout` (v4→v7), `actions/cache` (v4→v6), and `actions/upload-artifact` (v4→v7) in both workflows to their Node 24 releases, clearing the "Node.js 20 is deprecated" warnings GitHub Actions now emits on every job step
 - Adopted `silverassist/wp-plugin-kernel` in all three sub-plugins, replacing each one's own duplicated `LoadableInterface`/`Plugin` bootstrap with the shared `AbstractPlugin` — components now implement `get_priority()`/`should_load()`/`init()` (the kernel's contract) instead of the old local `priority()`/`register()`. In `contentful-tables`, `TableDataLoader` became a proper singleton (`ShortcodeRegistrar`/`SettingsPage` now fetch it via `TableDataLoader::instance()` instead of constructor injection), since kernel-managed components are instantiated with no arguments.
 
 ### Added
