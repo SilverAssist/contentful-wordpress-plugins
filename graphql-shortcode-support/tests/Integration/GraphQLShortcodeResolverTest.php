@@ -97,12 +97,17 @@ class GraphQLShortcodeResolverTest extends TestCase {
 		$this->assertSame( $plain, $result );
 	}
 
-	public function test_register_rendered_content_field_does_not_fatal(): void {
+	public function test_register_rendered_content_field_builds_queryable_schema(): void {
 		\update_option( 'gss_settings', [ 'enabled' => true, 'post_types' => [ 'post', 'page' ], 'fields' => [ 'content' ] ] );
 		$resolver = GraphQLShortcodeResolver::instance();
 
 		$resolver->register_rendered_content_field();
 
-		$this->assertTrue( true, 'register_rendered_content_field() completed without a fatal error.' );
+		// A plain data query (not introspection, which WPGraphQL blocks for public
+		// requests by default) is enough to force a real schema build and confirm
+		// the field registration didn't leave the schema broken.
+		$result = \graphql( [ 'query' => '{ posts { nodes { id } } }' ] );
+
+		$this->assertArrayNotHasKey( 'errors', $result, 'Schema must build successfully after register_rendered_content_field() runs.' );
 	}
 }
