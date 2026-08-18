@@ -203,10 +203,12 @@ Each sub-plugin has its own PHPUnit suite (`tests/Unit`, `tests/Integration`) co
 WPGraphQL registration behavior. They share one WordPress test environment, set up once:
 
 ```bash
-bash scripts/install-wp-tests.sh wordpress_test root '' localhost latest
-bash scripts/install-wpgraphql-for-tests.sh
+# One-shot: install deps, set up the shared WP test env, run PHPUnit for all 3 plugins
+make test-integration
 
-cd community-listings && WP_TESTS_DIR=/tmp/wordpress-tests-lib composer run phpunit
+# Or step-by-step:
+make install-wp-test-env   # Install the shared WordPress test suite + WPGraphQL (once)
+make phpunit                # Run PHPUnit for all 3 sub-plugins
 ```
 
 ## 🤝 Contributing

@@ -12,7 +12,20 @@ NC := \033[0m # No Color
 # Plugin directories
 PLUGINS := community-listings contentful-tables graphql-shortcode-support
 
-.PHONY: help install install-dev clean test phpcs phpstan build release
+# WordPress test suite database (override e.g. `make install-wp-test-env DB_PASS=...`)
+DB_NAME ?= wordpress_test
+DB_USER ?= root
+DB_PASS ?= root
+DB_HOST ?= 127.0.0.1
+WP_VERSION ?= latest
+
+# Fixed (not $TMPDIR-derived) so install-wp-tests.sh, install-wpgraphql-for-tests.sh,
+# and each plugin's tests/bootstrap.php all agree on the same paths regardless of the
+# platform's default temp dir (e.g. macOS's per-session /var/folders/... vs Linux's /tmp).
+export WP_TESTS_DIR ?= /tmp/wordpress-tests-lib
+export WP_CORE_DIR ?= /tmp/wordpress
+
+.PHONY: help install install-dev clean test phpcs phpstan build release install-wp-test-env phpunit test-integration
 
 help: ## Show this help message
 	@echo "$(BLUE)Contentful WordPress Plugins - Development Commands$(NC)"
@@ -77,6 +90,25 @@ phpstan: ## Run PHPStan static analysis on all plugins
 
 test: install-dev phpcs phpstan ## Run all quality assurance tests
 	@echo "$(GREEN)✅ All tests passed!$(NC)"
+
+install-wp-test-env: ## Install the shared WordPress test suite + WPGraphQL (one-time, shared across all plugins)
+	@echo "$(BLUE)Installing WordPress test suite...$(NC)"
+	@bash scripts/install-wp-tests.sh "$(DB_NAME)" "$(DB_USER)" "$(DB_PASS)" "$(DB_HOST)" "$(WP_VERSION)"
+	@bash scripts/install-wpgraphql-for-tests.sh
+	@echo "$(GREEN)✅ WordPress test environment ready!$(NC)"
+
+phpunit: ## Run PHPUnit suites for all plugins (requires install-wp-test-env first)
+	@echo "$(BLUE)Running PHPUnit on all plugins...$(NC)"
+	@status=0; \
+	for plugin in $(PLUGINS); do \
+		echo "Testing $$plugin..."; \
+		(cd $$plugin && composer run phpunit) || status=1; \
+	done; \
+	exit $$status
+	@echo "$(GREEN)✅ PHPUnit completed!$(NC)"
+
+test-integration: install-dev install-wp-test-env phpunit ## Run PHPUnit suites incl. WordPress/WPGraphQL integration tests
+	@echo "$(GREEN)✅ Integration tests passed!$(NC)"
 
 build: clean install ## Build production-ready plugins
 	@echo "$(BLUE)Building production plugins...$(NC)"

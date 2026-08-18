@@ -165,11 +165,13 @@ Run linting/static analysis for all sub-plugins:
 make test
 ```
 
-Run a sub-plugin's PHPUnit suite (requires a WordPress test environment — set up once, shared by all three sub-plugins):
+Run the PHPUnit suites for all three sub-plugins (sets up the shared WordPress test environment once, then runs PHPUnit):
 ```bash
-bash scripts/install-wp-tests.sh wordpress_test root '' localhost latest
-bash scripts/install-wpgraphql-for-tests.sh
-cd community-listings && WP_TESTS_DIR=/tmp/wordpress-tests-lib composer run phpunit
+make test-integration
+
+# Or step-by-step:
+make install-wp-test-env   # Install the shared WordPress test suite + WPGraphQL (once)
+make phpunit                # Run PHPUnit for all 3 sub-plugins
 ```
 
 ## 📤 Pull Request Process
