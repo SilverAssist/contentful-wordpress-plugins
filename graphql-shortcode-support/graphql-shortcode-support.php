@@ -3,7 +3,7 @@
  * Plugin Name: GraphQL Shortcode Support
  * Plugin URI: https://github.com/SilverAssist/graphql-shortcode-support
  * Description: Applies do_shortcode() to WPGraphQL content fields, rendering shortcodes as HTML in GraphQL responses.
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: Silver Assist
  * Author URI: https://silverassist.com
  * License: PolyForm-Noncommercial-1.0.0

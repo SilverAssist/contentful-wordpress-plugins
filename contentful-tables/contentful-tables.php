@@ -3,7 +3,7 @@
  * Plugin Name: Contentful Tables
  * Plugin URI: https://github.com/SilverAssist/contentful-tables
  * Description: Displays Contentful content components (tables, charts, cards, forms) using shortcodes with WPGraphQL support.
- * Version: 4.2.0
+ * Version: 4.3.0
  * Author: Silver Assist
  * Author URI: https://silverassist.com
  * License: PolyForm-Noncommercial-1.0.0
