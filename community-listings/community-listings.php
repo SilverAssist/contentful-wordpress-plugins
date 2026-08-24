@@ -3,7 +3,7 @@
  * Plugin Name: Community Listings CPT
  * Plugin URI: https://github.com/SilverAssist/community-listings
  * Description: Registers a hierarchical "Community" custom post type for state and city memory care listings with WPGraphQL support.
- * Version: 2.2.4
+ * Version: 2.3.0
  * Author: Silver Assist
  * Author URI: https://silverassist.com
  * License: PolyForm-Noncommercial-1.0.0

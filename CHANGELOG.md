@@ -5,7 +5,7 @@ All notable changes to the **Contentful WordPress Plugins** collection will be d
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the repository level.
 Individual plugin versions are tracked separately in their respective plugin headers.
 
-## [Unreleased]
+## [v1.3.0] — 2026-08-24
 
 ### Changed
 - Bumped `actions/checkout` (v4→v7), `actions/cache` (v4→v6), and `actions/upload-artifact` (v4→v7) in both workflows to their Node 24 releases, clearing the "Node.js 20 is deprecated" warnings GitHub Actions now emits on every job step
