@@ -211,6 +211,15 @@ make install-wp-test-env   # Install the shared WordPress test suite + WPGraphQL
 make phpunit                # Run PHPUnit for all 3 sub-plugins
 ```
 
+### Composer authentication (private packages)
+
+Each plugin depends on SilverAssist packages (`wp-plugin-kernel`, `wp-settings-hub`, `coding-standards` and `wp-coding-standards`) that are installed from their GitHub repositories through Composer `vcs` repositories declared in the plugin's `composer.json` (with `"no-api": true`, so Composer reads tags with git and does not spend the GitHub API quota of the token), not from Packagist.org. Those repositories can require authentication, so configure a token before `make install` or `composer install`:
+
+- **Locally:** `composer config --global github-oauth.github.com <token>`
+- **CI:** store `{"github-oauth":{"github.com":"<token>"}}` as the repository secret `COMPOSER_AUTH`. The workflows already pass it to the install steps.
+
+Never commit a token or an `auth.json`.
+
 ## 🤝 Contributing
 
 1. Fork the repository

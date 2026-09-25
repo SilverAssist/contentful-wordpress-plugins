@@ -3,6 +3,12 @@
     "description": "Registers a hierarchical Community custom post type for state and city memory care listings with WPGraphQL support.",
     "type": "wordpress-plugin",
     "license": "proprietary",
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/SilverAssist/wp-plugin-kernel", "no-api": true },
+        { "type": "vcs", "url": "https://github.com/SilverAssist/wp-settings-hub", "no-api": true },
+        { "type": "vcs", "url": "https://github.com/SilverAssist/coding-standards", "no-api": true },
+        { "type": "vcs", "url": "https://github.com/SilverAssist/wp-coding-standards", "no-api": true }
+    ],
     "require": {
         "php": ">=8.2",
         "silverassist/wp-plugin-kernel": "^1.0",

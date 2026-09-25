@@ -53,6 +53,8 @@ jobs:
           ${{ runner.os }}-composer-
 
     - name: Install dependencies
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
       run: make install-dev
 
     - name: Run PHPCS
@@ -68,9 +70,12 @@ jobs:
     - name: Run PHPUnit
       env:
         WP_TESTS_DIR: /tmp/wordpress-tests-lib
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
       run: make test-integration DB_HOST=127.0.0.1
 
     - name: Build distribution packages
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
       run: make build
 
     - name: Upload build artifacts

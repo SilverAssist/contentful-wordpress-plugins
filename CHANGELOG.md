@@ -5,6 +5,15 @@ All notable changes to the **Contentful WordPress Plugins** collection will be d
 This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) at the repository level.
 Individual plugin versions are tracked separately in their respective plugin headers.
 
+## [Unreleased]
+
+### Changed
+- Declared Composer `vcs` repositories (with `"no-api": true`) for the SilverAssist packages in the `composer.json` of the three sub-plugins, so `composer install` resolves them from GitHub instead of Packagist.org. `no-api` makes Composer read tags with git instead of the GitHub API, which otherwise spends about 100 requests of the token's hourly quota per install.
+- The CI and release workflows pass the `COMPOSER_AUTH` secret to the install steps, because those repositories can require authentication.
+
+### Documentation
+- README: new section "Composer authentication (private packages)". No plugin code or version changes, so no release is needed.
+
 ## [v1.3.0] — 2026-08-24
 
 ### Changed
