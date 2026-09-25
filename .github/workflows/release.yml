@@ -22,6 +22,8 @@ jobs:
         extensions: mbstring, intl
 
     - name: Install dependencies and build
+      env:
+        COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
       run: |
         make install
         make build
